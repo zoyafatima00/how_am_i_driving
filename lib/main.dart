@@ -35,9 +35,10 @@ class MyApp extends StatelessWidget {
             designSize: const Size(375, 812),
             builder: (ctx, child) {
               final MediaQueryData data = MediaQuery.of(context);
-
               return MediaQuery(
-                data: data.copyWith(textScaleFactor: 1),
+                data: data.copyWith(
+                  textScaler: const TextScaler.linear(1),
+                ),
                 child: MaterialApp(
                   theme: ThemeData(
                     useMaterial3: false,

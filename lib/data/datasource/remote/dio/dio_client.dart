@@ -1,15 +1,22 @@
+import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:how_am_i_driving/data/datasource/remote/dio/logging_interceptor.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
-import '../../../../utils/shared_prefs_keys.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'logging_interceptor.dart';
 
 class DioClient {
   final String baseUrl;
   final LoggingInterceptor? loggingInterceptor;
   final SharedPreferences? sharedPreferences;
+
+  showLog(String text) {
+    if (kDebugMode) {
+      log(text);
+    }
+  }
 
   late Dio dio;
   String? token;
@@ -21,12 +28,15 @@ class DioClient {
     this.loggingInterceptor,
     this.sharedPreferences,
   }) {
-    token = sharedPreferences?.getString(SharedPrefsKeys.TOKEN);
+    // token = sharedPreferences?.getString(SharedPrefsKeys.TOKEN);
+    print('token in inti $token');
+
     dio = dioC;
     dio
       ..options.baseUrl = baseUrl
-      ..options.connectTimeout = Duration(milliseconds: 30000) // Corrected
-      ..options.receiveTimeout = Duration(milliseconds: 30000) // Corrected
+      ..options.connectTimeout = const Duration(milliseconds: 30000)
+      ..options.receiveTimeout = const Duration(milliseconds: 30000)
+      ..httpClientAdapter
       ..options.headers = {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer $token',
@@ -34,8 +44,12 @@ class DioClient {
     dio.interceptors.add(loggingInterceptor!);
   }
 
+  void updateToken() {
+    // updateHeader(getUserObject()?.jwtToken, null);
+  }
+
   void updateHeader(String? token, String? countryCode) {
-    token = token ?? this.token;
+    // token = token ?? this.token;
     countryCode = countryCode == null
         ? this.countryCode == 'US'
             ? 'en'
@@ -45,6 +59,7 @@ class DioClient {
             : countryCode.toLowerCase();
     this.token = token;
     this.countryCode = countryCode;
+    print('===Country code====>$countryCode token=>$token');
     dio.options.headers = {
       'Content-Type': 'application/json; charset=UTF-8',
       'Authorization': 'Bearer $token',
@@ -66,13 +81,16 @@ class DioClient {
         cancelToken: cancelToken,
         onReceiveProgress: onReceiveProgress,
       );
+      showLog(
+          'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \nqueryParameters $queryParameters \nResponse $response');
+
       return response;
     } on SocketException catch (e) {
       throw SocketException(e.toString());
     } on FormatException catch (_) {
-      throw FormatException("Unable to process the data");
-    } catch (e) {
-      throw e;
+      throw const FormatException("Unable to process the data");
+    } catch (e, s) {
+      rethrow;
     }
   }
 
@@ -95,11 +113,15 @@ class DioClient {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
+
+      showLog(
+          'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \ndata $data \nResponse $response');
+
       return response;
     } on FormatException catch (_) {
-      throw FormatException("Unable to process the data");
+      throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -122,11 +144,44 @@ class DioClient {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
+      showLog(
+          'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \ndata $data \nResponse $response');
+
       return response;
     } on FormatException catch (_) {
-      throw FormatException("Unable to process the data");
+      throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      rethrow;
+    }
+  }
+
+  Future<Response> patch(
+    String uri, {
+    data,
+    Map<String, dynamic>? queryParameters,
+    Options? options,
+    CancelToken? cancelToken,
+    ProgressCallback? onSendProgress,
+    ProgressCallback? onReceiveProgress,
+  }) async {
+    try {
+      var response = await dio.patch(
+        uri,
+        data: data,
+        queryParameters: queryParameters,
+        options: options,
+        cancelToken: cancelToken,
+        onSendProgress: onSendProgress,
+        onReceiveProgress: onReceiveProgress,
+      );
+      showLog(
+          'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \ndata $data \nResponse $response');
+
+      return response;
+    } on FormatException catch (_) {
+      throw const FormatException("Unable to process the data");
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -147,9 +202,9 @@ class DioClient {
       );
       return response;
     } on FormatException catch (_) {
-      throw FormatException("Unable to process the data");
+      throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -165,9 +220,9 @@ class DioClient {
       );
       return response;
     } on FormatException catch (_) {
-      throw FormatException("Unable to process the data");
+      throw const FormatException("Unable to process the data");
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

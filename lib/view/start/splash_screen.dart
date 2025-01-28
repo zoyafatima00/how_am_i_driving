@@ -7,7 +7,7 @@ import '../../utils/color_resources.dart';
 import '../../widgets/bg_container.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const String route = '/';
+  static const String route = '/splashScreen';
 
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -23,9 +23,8 @@ class _SplashScreenState extends State<SplashScreen> {
         backgroundColor: AppColors.WHITE,
         body: BGContainer(
           child: Center(
-            child: Lottie.asset(
+            child: Image.asset(
               'assets/images/splash.png',
-              repeat: false,
             ),
           ),
         ),
