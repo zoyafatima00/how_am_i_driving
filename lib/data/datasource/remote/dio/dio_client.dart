@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -89,7 +88,7 @@ class DioClient {
       throw SocketException(e.toString());
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
-    } catch (e, s) {
+    } catch (e) {
       rethrow;
     }
   }

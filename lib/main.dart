@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
                 ),
                 child: MaterialApp(
                   theme: ThemeData(
+                    //fontFamily: "Pacifico",
                     useMaterial3: false,
                     colorScheme: ColorScheme.fromSwatch().copyWith(
                       primary: AppColors.PRIMARY_COLOR,

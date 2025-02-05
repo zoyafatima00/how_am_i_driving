@@ -51,7 +51,7 @@ class ApiErrorHandler {
                 default:
                   MyErrorResponse errorResponse =
                       MyErrorResponse.fromJson(error.response?.data);
-                  if (errorResponse.message.length > 0) {
+                  if (errorResponse.message.isNotEmpty) {
                     errorDescription = errorResponse;
                   } else {
                     errorDescription =
@@ -59,7 +59,7 @@ class ApiErrorHandler {
                   }
               }
               break;
-            case DioErrorType.sendTimeout:
+            case DioExceptionType.sendTimeout:
               errorDescription = "Send timeout with server";
               break;
             case DioExceptionType.badCertificate:

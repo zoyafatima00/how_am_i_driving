@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'data/datasource/remote/dio/dio_client.dart';
 import 'data/datasource/remote/dio/logging_interceptor.dart';
+import 'data/repo/auth_repo.dart';
 
 final sl = GetIt.instance;
 
@@ -15,7 +16,8 @@ Future<void> init() async {
       loggingInterceptor: sl(), sharedPreferences: sl()));
 
   // Repository
-
+  sl.registerLazySingleton(
+      () => AuthRepo(dioClient: sl(), sharedPreferences: sl()));
   // External
   final sharedPreferences = await SharedPreferences.getInstance();
   sl.registerLazySingleton(() => sharedPreferences);

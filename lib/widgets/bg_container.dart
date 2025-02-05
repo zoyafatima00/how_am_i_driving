@@ -16,10 +16,8 @@ class BGContainer extends StatelessWidget {
           begin: Alignment(1.00, -0.00),
           end: Alignment(-1, 0),
           colors: [
-            Color(0xFF2C367C),
-            Color(0xFF344381),
-            Color(0xFF3B518A),
-            Color(0xFF416096),
+            Color(0xFF488A99),
+            Color(0xFF488A99),
           ],
         ),
       ),

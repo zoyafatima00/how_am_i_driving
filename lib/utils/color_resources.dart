@@ -4,9 +4,15 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   AppColors._();
-  static Color PRIMARY_COLOR = const Color(0xFF2E397D);
+  static Color PRIMARY_COLOR = const Color(0xFF488A99);
   static Color SECONDARY_COLOR = const Color(0xFF3A5089);
   static Color BUTTON_COLOR = const Color(0xFFF09C5E);
+  static Color Text_COLOR = const Color(0xFF488A99);
+  static Color TextFIELD_COLOR = const Color(0xFF4D585B);
+  static Color TextFIELD_EYE_COLOR = const Color(0xFF707070);
+  static Color BOTTOM_NAV_COLOR = const Color(0xFFC6C6C6);
+  static Color TextFIELD_BACKGROUND_COLOR = const Color(0xFFE6E6E6);
+  static Color TextMUSTARD_COLOR = const Color(0xFFDBAE58);
   static const Color BLACK = Color(0xff15224F);
   static const Color LIGHT_BLACK = Color(0xff121212);
   static const Color WHITE = Color(0xffFFFFFF);

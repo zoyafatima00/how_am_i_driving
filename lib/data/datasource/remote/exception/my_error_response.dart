@@ -1,6 +1,7 @@
 /// statusCode : 400
 /// message : ["User Email Already Exist"]
 /// error : "Bad Request"
+library;
 
 class MyErrorResponse {
   MyErrorResponse({
