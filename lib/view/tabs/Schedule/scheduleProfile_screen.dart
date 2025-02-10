@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:how_am_i_driving/utils/color_resources.dart';
 import 'package:how_am_i_driving/view/tabs/Schedule/scheduleProfile_vm.dart';
 import 'package:provider/provider.dart';
 
-class ViewcheduleProfileScreen extends StatelessWidget {
+import '../../../utils/color_resources.dart';
+
+class ViewScheduleProfileScreen extends StatelessWidget {
   static const route = '/ViewScheduleProfileScreen';
-
-  const ViewcheduleProfileScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ViewScheduleProfileScreenVm>(builder: (context, vm, _) {
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back), // Back button icon
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context); // Navigate back to the HomeScreen
+              Navigator.pop(context);
             },
           ),
           actions: [
@@ -48,9 +46,7 @@ class ViewcheduleProfileScreen extends StatelessWidget {
               child: Row(
                 children: [
                   InkWell(
-                    onTap: () {
-                      // Handle notification tap
-                    },
+                    onTap: () {},
                     child: Image.asset(
                       'assets/images/bell-solid.png',
                       height: 21.h,
@@ -59,9 +55,7 @@ class ViewcheduleProfileScreen extends StatelessWidget {
                   ),
                   SizedBox(width: 10.w),
                   InkWell(
-                    onTap: () {
-                      // Handle profile tap
-                    },
+                    onTap: () {},
                     child: Image.asset(
                       'assets/images/person_icon.png',
                       height: 21.h,
@@ -78,33 +72,117 @@ class ViewcheduleProfileScreen extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         body: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Container(
-            padding: EdgeInsets.all(16.w),
-            decoration: BoxDecoration(
-              color: AppColors.Text_COLOR.withOpacity(0.15),
-              borderRadius: BorderRadius.circular(8.0),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  blurRadius: 6.0,
-                  spreadRadius: 1.0,
-                ),
-              ],
-            ),
-            child: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                _buildDetailRow("Ride Number", "12345", "Date", "01/01/2025",
-                    "Time", "10:00 AM"),
-                _buildDetailRow(
-                    "Driver", "Driver's ID", "Driver's Name", "", "", ""),
-                _buildDetailRow(
-                    "Vehicle", "Vehicle's ID", "Vehicle's Name", "", "", ""),
-                _buildDetailRow("Task", "Details", "", "", "", ""),
-                _buildDetailRow("Address", "Address", "", "", "", ""),
-                _buildDetailRow(
-                    "Supervisor", "Sup.'s ID", "Supervisor's Name", "", "", ""),
-                _buildDetailRow("Time Allocated", "Time", "", "", "", ""),
+                SizedBox(height: 14.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "Rides' Scheduled",
+                        style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'arial',
+                            color: AppColors.Text_COLOR),
+                      ),
+                    ),
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(10.w),
+                          decoration: BoxDecoration(
+                            color: AppColors.Text_COLOR.withOpacity(0.15),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Image.asset(
+                            'assets/images/calendar-days-solid.png',
+                            color: AppColors.Text_COLOR,
+                            height: 20.h,
+                            width: 20.w,
+                          ),
+                        ),
+                        Positioned(
+                          top: -10.h,
+                          right: 6,
+                          bottom: 12,
+                          child: Icon(
+                            Icons.add,
+                            size: 10.w,
+                            color: AppColors.Text_COLOR,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(height: 14.h),
+                Container(
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: AppColors.Text_COLOR,
+                    borderRadius: BorderRadius.circular(8.0),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        blurRadius: 6.0,
+                        spreadRadius: 1.0,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Column(
+                          children: [
+                            Text(
+                              "Ride Number",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18.sp,
+                                color: Colors.white,
+                                fontFamily: 'Arial',
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              "Date",
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                color: Colors.white,
+                                fontFamily: 'Arial',
+                              ),
+                            ),
+                            Text(
+                              "Time",
+                              style: TextStyle(
+                                fontSize: 15.sp,
+                                color: Colors.white,
+                                fontFamily: 'Arial',
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 16.h),
+                      _buildSection("Driver", ["Driver's ID", "Driver's Name"]),
+                      _buildSection(
+                          "Vehicle", ["Vehicle's ID", "Vehicle's Name"]),
+                      _buildSection("Task", ["Details"]),
+                      _buildSection("Address", ["Address"]),
+                      _buildSection(
+                          "Supervisor", ["Sup.'s ID", "Supervisor's Name"]),
+                      _buildSection("Time Allocated", ["Time"]),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 25.h),
               ],
             ),
           ),
@@ -113,44 +191,38 @@ class ViewcheduleProfileScreen extends StatelessWidget {
     });
   }
 
-  Widget _buildDetailRow(String title, String id, String name, String dateLabel,
-      String dateValue, String timeLabel) {
+  Widget _buildSection(String title, List<String> values) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title,
-                  style:
-                      TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold)),
-              SizedBox(height: 6.h),
-              Text(id,
-                  style: TextStyle(
-                      fontSize: 14.sp, fontWeight: FontWeight.normal)),
-              SizedBox(height: 6.h),
-              Text(name,
-                  style: TextStyle(
-                      fontSize: 14.sp, fontWeight: FontWeight.normal)),
-              SizedBox(height: 6.h),
-              dateLabel.isNotEmpty
-                  ? Text(dateLabel,
+          Text(
+            title,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.sp,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            height: 5.h,
+          ),
+          Wrap(
+            spacing: 12.w,
+            children: values
+                .map((text) => Text(
+                      text,
                       style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.normal))
-                  : SizedBox(),
-              dateValue.isNotEmpty
-                  ? Text(dateValue,
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.normal))
-                  : SizedBox(),
-              timeLabel.isNotEmpty
-                  ? Text(timeLabel,
-                      style: TextStyle(
-                          fontSize: 14.sp, fontWeight: FontWeight.normal))
-                  : SizedBox(),
-            ],
+                        fontSize: 15.sp,
+                        color: Colors.white,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ))
+                .toList(),
+          ),
+          SizedBox(
+            height: 5.h,
           ),
         ],
       ),

@@ -35,12 +35,28 @@ class TrackRideScreen extends StatelessWidget {
                 SizedBox(height: 25.h),
 
                 // Violation Records List
-                const Column(
+                Column(
                   children: [
-                    TrackRideCard(),
-                    TrackRideCard(),
-                    TrackRideCard(),
-                    TrackRideCard(),
+                    TrackRideCard(
+                      onTap: () {
+                        vm.onTrackRideProfileClicked(context);
+                      },
+                    ),
+                    TrackRideCard(
+                      onTap: () {
+                        vm.onTrackRideProfileClicked(context);
+                      },
+                    ),
+                    TrackRideCard(
+                      onTap: () {
+                        vm.onTrackRideProfileClicked(context);
+                      },
+                    ),
+                    TrackRideCard(
+                      onTap: () {
+                        vm.onTrackRideProfileClicked(context);
+                      },
+                    ),
                   ],
                 ),
               ],

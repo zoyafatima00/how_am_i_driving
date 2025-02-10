@@ -5,6 +5,6 @@ import '../../../data/base_vm.dart';
 
 class ScheduleScreenVm extends BaseVm {
   onViewScheduleProfileClicked(BuildContext context) {
-    Navigator.pushNamed(context, ViewcheduleProfileScreen.route);
+    Navigator.pushNamed(context, ViewScheduleProfileScreen.route);
   }
 }

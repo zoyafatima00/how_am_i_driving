@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:how_am_i_driving/view/tabs/Notification/notification_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../data/base_vm.dart';
@@ -64,6 +65,10 @@ class BottomNavVm extends BaseVm {
     _pages = p;
     print(p.length);
     notifyListeners();
+  }
+
+  onNotifcationClicked(BuildContext context) {
+    Navigator.pushNamed(context, NotificationScreen.route);
   }
 
   // List<String> monthlyOffers = [

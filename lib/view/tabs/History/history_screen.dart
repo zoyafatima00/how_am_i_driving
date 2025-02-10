@@ -104,12 +104,28 @@ class HistoryScreen extends StatelessWidget {
                 SizedBox(height: 10.h),
 
                 // Violation Records List
-                const Column(
+                Column(
                   children: [
-                    ViolationCard(),
-                    ViolationCard(),
-                    ViolationCard(),
-                    ViolationCard(),
+                    ViolationCard(
+                      onTap: () {
+                        vm.onHistoryProfileClicked(context);
+                      },
+                    ),
+                    ViolationCard(
+                      onTap: () {
+                        vm.onHistoryProfileClicked(context);
+                      },
+                    ),
+                    ViolationCard(
+                      onTap: () {
+                        vm.onHistoryProfileClicked(context);
+                      },
+                    ),
+                    ViolationCard(
+                      onTap: () {
+                        vm.onHistoryProfileClicked(context);
+                      },
+                    ),
                   ],
                 ),
               ],

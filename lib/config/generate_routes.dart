@@ -21,6 +21,8 @@ import '../view/start/splash_screen.dart';
 import '../view/start/splash_vm.dart';
 import '../view/tabs/History/history_screen.dart';
 import '../view/tabs/History/history_vm.dart';
+import '../view/tabs/History/violationHistory_screen.dart';
+import '../view/tabs/History/violationHistory_vm.dart';
 import '../view/tabs/Home/Driver/adddriver_screen.dart';
 import '../view/tabs/Home/Driver/adddriver_vm.dart';
 import '../view/tabs/Home/Driver/driverProfile_screen.dart';
@@ -31,6 +33,10 @@ import '../view/tabs/Home/Vehicle/vehicleProfile_vm.dart';
 import '../view/tabs/Home/Vehicle/vewVehicle_screen.dart';
 import '../view/tabs/Home/home_screen.dart';
 import '../view/tabs/Home/home_vm.dart';
+import '../view/tabs/Notification/notificationProfile_screen.dart';
+import '../view/tabs/Notification/notificationProfile_vm.dart';
+import '../view/tabs/Notification/notification_screen.dart';
+import '../view/tabs/Notification/notification_vm.dart';
 import '../view/tabs/Schedule/addSchedule_screen.dart';
 import '../view/tabs/Schedule/addSchedule_vm.dart';
 import '../view/tabs/Schedule/scheduleProfile_screen.dart';
@@ -39,6 +45,8 @@ import '../view/tabs/Schedule/schedule_screen.dart';
 import '../view/tabs/Schedule/schedule_vm.dart';
 import '../view/tabs/Schedule/viewSchedule_screen.dart';
 import '../view/tabs/Schedule/viewSchedule_vm.dart';
+import '../view/tabs/TrackRide/TrackRideProfile_screen.dart';
+import '../view/tabs/TrackRide/TrackRideProfile_vm.dart';
 import '../view/tabs/TrackRide/trackRide_screen.dart';
 import '../view/tabs/TrackRide/trackRide_vm.dart';
 
@@ -147,11 +155,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               create: (context) => ScheduleScreenVm(),
               child: const ScheduleScreen()));
 
-    case ViewcheduleProfileScreen.route:
+    case ViewScheduleProfileScreen.route:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (context) => ViewScheduleProfileScreenVm(),
-              child: const ViewcheduleProfileScreen()));
+              child: ViewScheduleProfileScreen()));
 
     case AddScheduleScreen.route:
       return MaterialPageRoute(
@@ -171,11 +179,35 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               create: (context) => TrackRideScreenVm(),
               child: const TrackRideScreen()));
 
+    case TrackRideProfileScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => TrackRideProfileVm(),
+              child: TrackRideProfileScreen()));
+
     case HistoryScreen.route:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (context) => HistoryScreenVm(),
               child: const HistoryScreen()));
+
+    case ViewHistoryProfileScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => ViewHistoryProfileVm(),
+              child: ViewHistoryProfileScreen()));
+
+    case NotificationScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => NotificationScreenVm(),
+              child: const NotificationScreen()));
+
+    case NotificationProfileScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => NotificationProfileVm(),
+              child: NotificationProfileScreen()));
 
     default:
       return errorRoute();

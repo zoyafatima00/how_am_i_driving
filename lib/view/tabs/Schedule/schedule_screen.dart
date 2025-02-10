@@ -28,13 +28,16 @@ class ScheduleScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      "Rides' Scheduled",
-                      style: TextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'arial',
-                          color: AppColors.Text_COLOR),
+                    Expanded(
+                      child: Text(
+                        textAlign: TextAlign.center,
+                        "Rides' Scheduled",
+                        style: TextStyle(
+                            fontSize: 20.sp,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: 'arial',
+                            color: AppColors.Text_COLOR),
+                      ),
                     ),
                     Stack(
                       alignment: Alignment.topCenter,

@@ -63,7 +63,7 @@ class BottomNavScreen extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () {
-                      // Handle notification tap
+                      vm.onNotifcationClicked(context);
                     },
                     child: Image.asset(
                       'assets/images/bell-solid.png',
