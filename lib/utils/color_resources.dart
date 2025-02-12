@@ -12,6 +12,7 @@ class AppColors {
   static Color TextFIELD_EYE_COLOR = const Color(0xFF707070);
   static Color BOTTOM_NAV_COLOR = const Color(0xFFC6C6C6);
   static Color TextFIELD_BACKGROUND_COLOR = const Color(0xFFE6E6E6);
+  static Color HISTORY_CARD_COLOR = const Color(0xFFB4B4B4);
   static Color TextMUSTARD_COLOR = const Color(0xFFDBAE58);
   static const Color BLACK = Color(0xff15224F);
   static const Color LIGHT_BLACK = Color(0xff121212);

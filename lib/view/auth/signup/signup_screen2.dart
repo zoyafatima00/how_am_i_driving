@@ -130,7 +130,13 @@ class SignUpTwoScreen extends StatelessWidget {
                       isEnabled: vm.isDataFilled,
                       buttonText: 'SignUp',
                       onPressed: () {
-                        vm.onCreateAccountClicked(context);
+                        if(vm.designationController.text == vm.designationList[0])
+                          {
+                            vm.onCreateAccountClickedTwo(context);
+                          }
+                        else {
+                          vm.onCreateAccountClicked(context);
+                        }
                       },
                     ),
                   ),

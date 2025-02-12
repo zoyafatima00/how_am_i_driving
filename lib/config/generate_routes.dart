@@ -5,8 +5,18 @@ import 'package:how_am_i_driving/view/tabs/Home/Vehicle/addvehicle_vm.dart';
 import 'package:how_am_i_driving/view/tabs/Home/Vehicle/viewVehicle_vm.dart';
 import 'package:provider/provider.dart';
 
+import '../view/AdminTabs/Achievements/achievement_screen.dart';
+import '../view/AdminTabs/Achievements/achievemnt_vm.dart';
+import '../view/AdminTabs/Home/admin_home_screen.dart';
+import '../view/AdminTabs/Home/admin_home_vm.dart';
+import '../view/AdminTabs/Schedule/admin_schedule.dart';
+import '../view/AdminTabs/Schedule/admin_schedule_vm.dart';
+import '../view/AdminTabs/Violations/admin_viloation_screen.dart';
+import '../view/AdminTabs/Violations/admin_violation_vm.dart';
 import '../view/auth/forgot_password/forgotPassword_screen.dart';
 import '../view/auth/forgot_password/forgotPassword_vm.dart';
+import '../view/auth/login/admin_login_screen.dart';
+import '../view/auth/login/admin_login_vm.dart';
 import '../view/auth/login/login_screen.dart';
 import '../view/auth/login/login_vm.dart';
 import '../view/auth/reset_password/ResetPassword_vm.dart';
@@ -15,6 +25,8 @@ import '../view/auth/signup/signup_screen.dart';
 import '../view/auth/signup/signup_screen2.dart';
 import '../view/auth/signup/signup_two_vm.dart';
 import '../view/auth/signup/signup_vm.dart';
+import '../view/bottom_nav/admin_bottom_nav.dart';
+import '../view/bottom_nav/admin_bottom_nav_vm.dart';
 import '../view/bottom_nav/bottom_nav_screen.dart';
 import '../view/bottom_nav/bottom_vm.dart';
 import '../view/start/splash_screen.dart';
@@ -62,6 +74,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => ChangeNotifierProvider(
               create: (context) => LoginVm(), child: const LoginScreen()));
 
+    case AdminLoginScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => AdminLoginVm(), child: const AdminLoginScreen()));
+
     case ForgotPasswordScreen.route:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
@@ -89,11 +106,36 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => ChangeNotifierProvider(
               create: (context) => BottomNavVm(),
               child: const BottomNavScreen()));
+    case AdminBottomNavScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => AdminBottomNavVm(),
+              child: const AdminBottomNavScreen()));
 
     case HomeScreen.route:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (context) => HomeScreenVm(), child: const HomeScreen()));
+
+    case AdminHomeScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => AdminHomeScreenVm(), child: const AdminHomeScreen()));
+
+    case  AdminScheduleScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) =>  AdminScheduleVm(), child: const  AdminScheduleScreen()));
+
+    case AdminViolationScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => AdminViolationVm(), child: const AdminViolationScreen()));
+
+    case AchievementScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => AchievementVm(), child: const AchievementScreen()));
 
     case ViewDriverScreen.route:
       return MaterialPageRoute(

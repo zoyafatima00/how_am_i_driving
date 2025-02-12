@@ -21,6 +21,7 @@ import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/my_snackbar.dart';
 import '../../bottom_nav/bottom_nav_screen.dart';
+import '../login/admin_login_screen.dart';
 import '../login/login_screen.dart';
 
 class SignUpTwoVm extends BaseVm {
@@ -53,7 +54,10 @@ class SignUpTwoVm extends BaseVm {
 
   // Lists for dropdowns
   List<String> cityList = ['New York', 'Los Angeles', 'Chicago', 'Houston'];
-  List<String> designationList = ['Manager', 'Developer', 'Designer', 'Tester'];
+  List<String> designationList = [
+    'Admin',
+    'Driver',
+  ];
 
   SignUpVm() {
     passwordController.addListener(() {
@@ -115,6 +119,35 @@ class SignUpTwoVm extends BaseVm {
     //     );
     //   }
     // });
+  }
+  void onCreateAccountClickedTwo(BuildContext context) {
+    if (cityController.text.isEmpty) {
+      customSnack(context: context, color: Colors.red, text: 'Enter City');
+      return;
+    }
+    if (contactNumberController.text.isEmpty) {
+      customSnack(
+          context: context,
+          color: Colors.red,
+          text: 'Enter Contact Information');
+      return;
+    }
+    if (designationController.text.isEmpty) {
+      customSnack(
+          context: context, color: Colors.red, text: 'Enter Designation');
+      return;
+    }
+    if (passwordController.text.isEmpty) {
+      customSnack(context: context, color: Colors.red, text: 'Enter  Password');
+      return;
+    }
+    if (reenterPasswordController.text.isEmpty) {
+      customSnack(
+          context: context, color: Colors.red, text: 'Enter Confirm Password');
+      return;
+    }
+
+    Navigator.pushReplacementNamed(context, AdminLoginScreen.route);
   }
 
   goToSignIn(BuildContext context) {
