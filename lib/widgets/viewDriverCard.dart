@@ -1,3 +1,5 @@
+import 'dart:io'; // Import for File
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -5,14 +7,14 @@ import '../utils/color_resources.dart';
 
 class ViewDriverCard extends StatelessWidget {
   final String driverName; // Driver's name passed from the parent screen
-  final String
-      driverImage; // Image URL or asset path passed from the parent screen
+  final File?
+      driverImageFile; // File object for the profile picture (fetched from API)
   final VoidCallback onTap; // Function to execute on tap
 
   const ViewDriverCard({
     super.key,
     required this.driverName,
-    required this.driverImage,
+    required this.driverImageFile,
     required this.onTap,
   });
 
@@ -38,6 +40,7 @@ class ViewDriverCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 5),
           child: Row(
             children: [
+              // Driver's Profile Picture
               ClipOval(
                 child: Container(
                   width: 36.w, // Set the size of the avatar (adjust as needed)
@@ -46,8 +49,17 @@ class ViewDriverCard extends StatelessWidget {
                     color: Colors.blue,
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(driverImage,
-                      fit: BoxFit.cover, alignment: Alignment.topCenter),
+                  child: driverImageFile != null
+                      ? Image.file(
+                          driverImageFile!, // Use the fetched profile picture
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        )
+                      : Image.asset(
+                          'assets/images/driver_image.png', // Fallback image
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        ),
                 ),
               ),
 
@@ -88,8 +100,7 @@ class ViewDriverCard extends StatelessWidget {
                   Icon(
                     Icons.delete_rounded, // Trash bin icon for deletion
                     size: 20.sp,
-                    color:
-                        AppColors.Text_COLOR, // Red color for the delete icon
+                    color: AppColors.Text_COLOR,
                   ),
                 ],
               ),

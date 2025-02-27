@@ -16,7 +16,6 @@ import '../../../data/model/response/signUpResponse.dart';
 import '../../../data/repo/auth_repo.dart';
 import '../../../helpers/pref_init.dart';
 import '../../../utils/app_constants.dart';
-import '../../../utils/shared_prefs_keys.dart';
 import '../../../widgets/custom_button.dart';
 import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/my_snackbar.dart';
@@ -120,6 +119,7 @@ class SignUpTwoVm extends BaseVm {
     //   }
     // });
   }
+
   void onCreateAccountClickedTwo(BuildContext context) {
     if (cityController.text.isEmpty) {
       customSnack(context: context, color: Colors.red, text: 'Enter City');
@@ -309,7 +309,7 @@ class SignUpTwoVm extends BaseVm {
     }
 
     SignUpBody body = SignUpBody(
-        imageBase64: imageData == '' ? null : imageData,
+        // imageBase64: imageData == '' ? null : imageData,
         password: passwordController.text,
         confirmPassword: reenterPasswordController.text,
         city: cityController.text,
@@ -338,7 +338,6 @@ class SignUpTwoVm extends BaseVm {
             apiResponse.response?.statusCode == 200 ||
         apiResponse.response?.statusCode == 201) {
       _response = SignUpResponse.fromJson(apiResponse.response?.data);
-      await MyPrefs.setStringShared(SharedPrefsKeys.TOKEN, response!.token!);
       callBack(true, "Registered Successfully");
       _isLoading = false;
       notifyListeners();

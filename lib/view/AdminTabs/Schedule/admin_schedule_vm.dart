@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
+
 import '../../../data/base_vm.dart';
+import 'admin_schedule_profile_screen.dart';
 
 class AdminScheduleVm extends BaseVm {
-  // onNotificationCardClicked(BuildContext context) {
-  //   Navigator.pushNamed(context, NotificationProfileScreen.route);
-  // }
+  onViewScheduleProfileClicked(BuildContext context) {
+    Navigator.pushNamed(context, AdminScheduleProfileScreen.route);
+  }
 }

@@ -39,17 +39,17 @@ class AdminScheduleScreen extends StatelessWidget {
                   children: [
                     TrackRideCard(
                       onTap: () {
-                        //vm.onTrackRideProfileClicked(context);
+                        vm.onViewScheduleProfileClicked(context);
                       },
                     ),
                     TrackRideCard(
                       onTap: () {
-                        //vm.onTrackRideProfileClicked(context);
+                        vm.onViewScheduleProfileClicked(context);
                       },
                     ),
                     TrackRideCard(
                       onTap: () {
-                        // vm.onTrackRideProfileClicked(context);
+                        vm.onViewScheduleProfileClicked(context);
                       },
                     ),
                   ],

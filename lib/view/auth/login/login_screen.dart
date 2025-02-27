@@ -17,6 +17,17 @@ class LoginScreen extends StatelessWidget {
     return Consumer<LoginVm>(builder: (context, vm, _) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, // Make the app bar transparent
+          elevation: 0, // Removes the shadow
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back,
+                color: AppColors.Text_COLOR), // Back arrow icon
+            onPressed: () {
+              vm.onBackArrow(context);
+            },
+          ),
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(

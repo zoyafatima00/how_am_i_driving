@@ -150,14 +150,14 @@ class AddDriverScreen extends StatelessWidget {
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 5.0.h),
                       child: CustomTextField(
-                        hintText: 'First Name',
+                        hintText: 'Full Name',
                         controllerValue: vm.firstNameController,
                       ),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 5.0.h),
                       child: CustomTextField(
-                        hintText: 'Last Name',
+                        hintText: 'Email',
                         controllerValue: vm.lastNameController,
                       ),
                     ),
@@ -243,7 +243,7 @@ class AddDriverScreen extends StatelessWidget {
                   isEnabled: vm.isDataFilled,
                   buttonText: 'Add Driver',
                   onPressed: () {
-                    //vm.onNextClicked(context);
+                    vm.onAddDriverClicked(context);
                   },
                 ),
               ),

@@ -4,12 +4,10 @@ import 'dart:io'; // Import for File
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:how_am_i_driving/view/auth/signup/signup_screen2.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../../../data/base_vm.dart';
 import '../../../data/model/body/signUpBody.dart';
 import '../../../data/model/response/base/api_response.dart';
@@ -17,10 +15,9 @@ import '../../../data/model/response/signUpResponse.dart';
 import '../../../data/repo/auth_repo.dart';
 import '../../../helpers/pref_init.dart';
 import '../../../utils/app_constants.dart';
-import '../../../utils/shared_prefs_keys.dart';
 import '../../../widgets/custom_button.dart';
+import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/my_snackbar.dart';
-import '../login/login_screen.dart';
 
 class SignUpVm extends BaseVm {
   AuthRepo authRepo = GetIt.I.get<AuthRepo>();
@@ -28,11 +25,18 @@ class SignUpVm extends BaseVm {
   SignUpResponse? _response;
 
   SignUpResponse? get response => _response;
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
+
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   TextEditingController cnicController = TextEditingController();
   TextEditingController dobController = TextEditingController();
   TextEditingController raddressController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController contactNumberController = TextEditingController();
+  TextEditingController designationController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController reenterPasswordController = TextEditingController();
+
   final ImagePicker picker = ImagePicker();
   File? imageFile;
   String imageData = '';
@@ -41,17 +45,22 @@ class SignUpVm extends BaseVm {
   bool get isLoading => _isLoading;
 
   bool get isDataFilled =>
-      firstNameController.text.isNotEmpty &&
-      lastNameController.text.isNotEmpty &&
+      fullNameController.text.isNotEmpty &&
+      emailController.text.isNotEmpty &&
       cnicController.text.isNotEmpty &&
       dobController.text.isNotEmpty &&
-      raddressController.text.isNotEmpty;
+      raddressController.text.isNotEmpty &&
+      cityController.text.isNotEmpty &&
+      contactNumberController.text.isNotEmpty &&
+      designationController.text.isNotEmpty &&
+      passwordController.text.isNotEmpty &&
+      reenterPasswordController.text.isNotEmpty;
 
   SignUpVm() {
-    firstNameController.addListener(() {
+    fullNameController.addListener(() {
       notifyListeners();
     });
-    lastNameController.addListener(() {
+    emailController.addListener(() {
       notifyListeners();
     });
     cnicController.addListener(() {
@@ -63,51 +72,129 @@ class SignUpVm extends BaseVm {
     raddressController.addListener(() {
       notifyListeners();
     });
+    cityController.addListener(() {
+      notifyListeners();
+    });
+    contactNumberController.addListener(() {
+      notifyListeners();
+    });
+    designationController.addListener(() {
+      notifyListeners();
+    });
+    passwordController.addListener(() {
+      notifyListeners();
+    });
+    reenterPasswordController.addListener(() {
+      notifyListeners();
+    });
   }
 
+  // Method to go to SignIn screen
   goToSignIn(BuildContext context) {
-    Navigator.pushReplacementNamed(context, LoginScreen.route);
+    Navigator.pushReplacementNamed(context, '/SignInScreen');
   }
 
-  void onNextClicked(BuildContext context) {
-    if (firstNameController.text.isEmpty) {
+  // Method to select an image for the user
+  selectImage(ImageSource source, BuildContext context) async {
+    try {
+      XFile? image = await picker.pickImage(
+          source: source, imageQuality: 70, requestFullMetadata: false);
+      if (image != null) {
+        imageFile = File(image.path); // Save the selected image as a File
+        notifyListeners(); // Notify listeners to update UI
+
+        // Read the image bytes and convert to Base64
+        Uint8List imageBytes = await image.readAsBytes();
+        imageData = uint8ListToBase64(imageBytes); // Convert to Base64
+        notifyListeners();
+      }
+    } catch (e) {
       customSnack(
-          context: context, color: Colors.red, text: 'Enter First Name');
-      return;
+          context: context, color: Colors.red, text: "Error picking image: $e");
     }
-    if (lastNameController.text.isEmpty) {
-      customSnack(context: context, color: Colors.red, text: 'Enter Last Name');
-      return;
-    }
-    if (cnicController.text.isEmpty) {
-      customSnack(context: context, color: Colors.red, text: 'Enter CNIC');
-      return;
-    }
-    if (dobController.text.isEmpty) {
+  }
+
+  // Method to convert Uint8List to Base64
+  String uint8ListToBase64(Uint8List bytes) {
+    return base64Encode(bytes); // Converts the byte data to Base64 string
+  }
+
+  // Method to handle sign up button click
+  void onSignUpClicked(BuildContext context) async {
+    if (passwordController.text.isEmpty) {
       customSnack(
-          context: context, color: Colors.red, text: 'Enter Date Of Birth');
+          context: context, color: Colors.red, text: 'Please enter password');
       return;
     }
-    if (raddressController.text.isEmpty) {
-      customSnack(context: context, color: Colors.red, text: 'Enter Address');
+    if (reenterPasswordController.text.isEmpty) {
+      customSnack(
+          context: context,
+          color: Colors.red,
+          text: 'Please enter confirm password');
+      return;
+    }
+    if (passwordController.text != reenterPasswordController.text) {
+      customSnack(
+          context: context, color: Colors.red, text: 'Password not matched');
       return;
     }
 
-    Navigator.pushReplacementNamed(context, SignUpTwoScreen.route);
+    SignUpBody body = SignUpBody(
+      fullName: fullNameController.text,
+      email: emailController.text,
+      cnic: cnicController.text,
+      dob: dobController.text,
+      address: raddressController.text,
+      city: cityController.text,
+      contactNumber: contactNumberController.text,
+      designation: designationController.text,
+      password: passwordController.text,
+      confirmPassword: reenterPasswordController.text,
+      // imageBase64:
+      //     imageData == '' ? null : imageData, // Add image data if available
+    );
 
-    // _loginUser(emailController.text, passwordController.text,
-    //     (bool status, String message) {
-    //   if (status) {
-    //     Navigator.pushReplacementNamed(context, BottomNavScreen.route);
-    //   } else {
-    //     customMessageDialog(
-    //       context: context,
-    //       msg: message,
-    //       isError: true,
-    //       onTap: () => Navigator.pop(context),
-    //     );
-    //   }
-    // });
+    await registerNewUser(body, (bool status, String msg) {
+      if (status) {
+        customSnack(context: context, color: Colors.green, text: msg);
+        Navigator.pushReplacementNamed(context, '/BottomNavScreen');
+      } else {
+        customMessageDialog(
+          context: context,
+          msg: msg,
+          isError: true,
+          onTap: () => Navigator.pop(context),
+        );
+      }
+    });
+  }
+
+  // API call for registering a new user
+  registerNewUser(SignUpBody body, Function callBack) async {
+    _isLoading = true;
+    notifyListeners();
+    ApiResponse apiResponse = await authRepo.signUpUser(body);
+    if (apiResponse.response != null &&
+        (apiResponse.response?.statusCode == 200 ||
+            apiResponse.response?.statusCode == 201)) {
+      _response = SignUpResponse.fromJson(apiResponse.response?.data);
+      callBack(true, "Registered Successfully");
+      _isLoading = false;
+      notifyListeners();
+    } else {
+      _isLoading = false;
+      notifyListeners();
+      String? errorMessage;
+      if (apiResponse.error is String) {
+        errorMessage = apiResponse.error.toString();
+      } else {
+        dynamic errorResponse = apiResponse.error;
+        errorMessage = errorResponse.message;
+      }
+      callBack(false, errorMessage ?? "Something went wrong");
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   showSheet(BuildContext context) {
@@ -207,59 +294,5 @@ class SignUpVm extends BaseVm {
                 ),
               ));
         });
-  }
-
-  // Method to select an image using ImagePicker
-  selectImage(ImageSource source, BuildContext context) async {
-    try {
-      XFile? image = await picker.pickImage(
-          source: source, imageQuality: 70, requestFullMetadata: false);
-      if (image != null) {
-        imageFile = File(image.path); // Save the selected image as a File
-        notifyListeners(); // Notify listeners to update UI
-
-        // Read the image bytes and convert to Base64
-        Uint8List imageBytes = await image.readAsBytes();
-        imageData = uint8ListToBase64(imageBytes); // Convert to Base64
-        notifyListeners();
-      }
-    } catch (e) {
-      customSnack(
-          context: context, color: Colors.red, text: "Error picking image: $e");
-    }
-  }
-
-  // Method to convert Uint8List to Base64
-  String uint8ListToBase64(Uint8List bytes) {
-    return base64Encode(bytes); // Converts the byte data to Base64 string
-  }
-
-  //API CALLS
-  registerNewUser(SignUpBody body, Function callBack) async {
-    _isLoading = true;
-    notifyListeners();
-    ApiResponse apiResponse = await authRepo.signUpUser(body);
-    if (apiResponse.response != null &&
-            apiResponse.response?.statusCode == 200 ||
-        apiResponse.response?.statusCode == 201) {
-      _response = SignUpResponse.fromJson(apiResponse.response?.data);
-      await MyPrefs.setStringShared(SharedPrefsKeys.TOKEN, response!.token!);
-      callBack(true, "Registered Successfully");
-      _isLoading = false;
-      notifyListeners();
-    } else {
-      _isLoading = false;
-      notifyListeners();
-      String? errorMessage;
-      if (apiResponse.error is String) {
-        errorMessage = apiResponse.error.toString();
-      } else {
-        dynamic errorResponse = apiResponse.error;
-        errorMessage = errorResponse.message;
-      }
-      callBack(false, errorMessage);
-      _isLoading = false;
-      notifyListeners();
-    }
   }
 }

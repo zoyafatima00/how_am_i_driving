@@ -25,7 +25,7 @@ class AdminHomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 14.h),
                   Text(
                     "Organization’s Name",
                     style: TextStyle(
@@ -38,7 +38,7 @@ class AdminHomeScreen extends StatelessWidget {
                   Text(
                     "12th December 2024",
                     style: TextStyle(
-                        fontSize: 16.sp,
+                        fontSize: 15.sp,
                         fontFamily: 'arial',
                         fontWeight: FontWeight.w500,
                         color: Colors.black),
@@ -72,7 +72,9 @@ class AdminHomeScreen extends StatelessWidget {
                         title: "Rides' History",
                         iconPath: 'assets/images/car-solid (1).png',
                         cardColor: AppColors.HISTORY_CARD_COLOR,
-                        onTap: () {},
+                        onTap: () {
+                          vm.onRideHistoryClicked(context);
+                        },
                       ),
                     ],
                   ),

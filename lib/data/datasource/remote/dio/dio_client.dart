@@ -1,9 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'logging_interceptor.dart';
 
 class DioClient {
@@ -18,7 +19,6 @@ class DioClient {
   }
 
   late Dio dio;
-  String? token;
   late String countryCode;
 
   DioClient(
@@ -27,42 +27,26 @@ class DioClient {
     this.loggingInterceptor,
     this.sharedPreferences,
   }) {
-    // token = sharedPreferences?.getString(SharedPrefsKeys.TOKEN);
-    print('token in inti $token');
-
     dio = dioC;
     dio
       ..options.baseUrl = baseUrl
-      ..options.connectTimeout = const Duration(milliseconds: 30000)
-      ..options.receiveTimeout = const Duration(milliseconds: 30000)
+      ..options.connectTimeout = const Duration(milliseconds: 90000)
+      ..options.receiveTimeout = const Duration(milliseconds: 90000)
       ..httpClientAdapter
       ..options.headers = {
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $token',
       };
     dio.interceptors.add(loggingInterceptor!);
   }
 
-  void updateToken() {
-    // updateHeader(getUserObject()?.jwtToken, null);
-  }
-
-  void updateHeader(String? token, String? countryCode) {
-    // token = token ?? this.token;
-    countryCode = countryCode == null
-        ? this.countryCode == 'US'
-            ? 'en'
-            : this.countryCode.toLowerCase()
-        : countryCode == 'US'
-            ? 'en'
-            : countryCode.toLowerCase();
-    this.token = token;
-    this.countryCode = countryCode;
-    print('===Country code====>$countryCode token=>$token');
+  // Update headers when needed (without the token)
+  void updateHeader(String? countryCode) {
+    this.countryCode =
+        countryCode ?? 'en'; // Default to 'en' if no country code
     dio.options.headers = {
       'Content-Type': 'application/json; charset=UTF-8',
-      'Authorization': 'Bearer $token',
     };
+    print('===Country code====>$countryCode');
   }
 
   Future<Response> get(
@@ -82,7 +66,6 @@ class DioClient {
       );
       showLog(
           'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \nqueryParameters $queryParameters \nResponse $response');
-
       return response;
     } on SocketException catch (e) {
       throw SocketException(e.toString());
@@ -112,10 +95,8 @@ class DioClient {
         onSendProgress: onSendProgress,
         onReceiveProgress: onReceiveProgress,
       );
-
       showLog(
           'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \ndata $data \nResponse $response');
-
       return response;
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
@@ -145,7 +126,6 @@ class DioClient {
       );
       showLog(
           'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \ndata $data \nResponse $response');
-
       return response;
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");
@@ -175,7 +155,6 @@ class DioClient {
       );
       showLog(
           'Uri ${dio.options.baseUrl}$uri \nheaders ${dio.options.headers} \ndata $data \nResponse $response');
-
       return response;
     } on FormatException catch (_) {
       throw const FormatException("Unable to process the data");

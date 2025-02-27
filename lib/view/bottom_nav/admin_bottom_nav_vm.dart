@@ -12,10 +12,6 @@ import '../AdminTabs/Schedule/admin_schedule.dart';
 import '../AdminTabs/Schedule/admin_schedule_vm.dart';
 import '../AdminTabs/Violations/admin_viloation_screen.dart';
 import '../AdminTabs/Violations/admin_violation_vm.dart';
-import '../tabs/History/history_screen.dart';
-import '../tabs/History/history_vm.dart';
-import '../tabs/TrackRide/trackRide_screen.dart';
-import '../tabs/TrackRide/trackRide_vm.dart';
 
 class AdminBottomNavVm extends BaseVm {
   late final BuildContext context;
@@ -44,6 +40,13 @@ class AdminBottomNavVm extends BaseVm {
   set isMore(bool value) {
     _isMore = value;
   }
+
+  List<String> moreList = [
+    'How To Use This App',
+    'About Hypnosis Meditation',
+    'More Tools For Change',
+    'About Dawn Grant',
+  ];
 
   void toggleExpansion(bool expanded) {
     _isMore = expanded;

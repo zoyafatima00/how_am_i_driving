@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import 'config/generate_routes.dart';
 import 'data/model/app_model.dart';
+import 'data/repo/auth_repo.dart';
 import 'di_container.dart' as di;
 
 void main() async {
@@ -24,11 +25,19 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GetIt.I.get<AppModel>(),
+    return MultiProvider(
+      providers: [
+        // Provide AppModel
+        ChangeNotifierProvider(
+          create: (context) => GetIt.I.get<AppModel>(),
+        ),
+        // Provide AuthRepo
+        Provider<AuthRepo>(
+          create: (context) => GetIt.I.get<AuthRepo>(),
+        ),
+      ],
       child: Consumer<AppModel>(
         builder: (context, model, _) {
           return ScreenUtilInit(

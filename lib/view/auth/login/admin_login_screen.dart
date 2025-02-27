@@ -17,12 +17,28 @@ class AdminLoginScreen extends StatelessWidget {
     return Consumer<AdminLoginVm>(builder: (context, vm, _) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Column(
+        appBar: AppBar(
+          backgroundColor: Colors.transparent, // Make the app bar transparent
+          elevation: 0, // Removes the shadow
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back,
+                color: AppColors.Text_COLOR), // Back arrow icon
+            onPressed: () {
+              vm.onBackArrow(context);
+            },
+          ),
+        ),
+        body: Center(
+          // This centers the entire body of the screen
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              maxWidth: 600.w, // Limit the width if needed
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(height: 22.h),
                   Image.asset(
@@ -30,26 +46,6 @@ class AdminLoginScreen extends StatelessWidget {
                     height: 120.h,
                   ),
                   SizedBox(height: 10.h),
-                  // RichText(
-                  //   text: TextSpan(
-                  //     text: 'How am I ',
-                  //     style: GoogleFonts.nunito(
-                  //       fontSize: 24,
-                  //       fontWeight: FontWeight.bold,
-                  //       color: Colors.teal[700],
-                  //     ),
-                  //     children: [
-                  //       TextSpan(
-                  //         text: 'Driving?',
-                  //         style: GoogleFonts.nunito(
-                  //           fontSize: 24,
-                  //           fontWeight: FontWeight.bold,
-                  //           color: Colors.amber[700],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
                   const SizedBox(height: 20),
                   Text(
                     'Welcome!',
@@ -60,7 +56,6 @@ class AdminLoginScreen extends StatelessWidget {
                       color: AppColors.Text_COLOR,
                     ),
                   ),
-
                   const SizedBox(height: 5),
                   Text(
                     'Login to your account',
@@ -71,120 +66,58 @@ class AdminLoginScreen extends StatelessWidget {
                       color: AppColors.TextFIELD_EYE_COLOR,
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 30),
-              CustomTextField(
-                hintText: 'UserName',
-                controllerValue: vm.emailController,
-              ),
-              const SizedBox(height: 10),
-              CustomTextField(
-                hintText: 'Password',
-                isPassword: true,
-                controllerValue: vm.passwordController,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                  const SizedBox(height: 30),
+                  CustomTextField(
+                    hintText: 'UserName',
+                    controllerValue: vm.emailController,
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTextField(
+                    hintText: 'Password',
+                    isPassword: true,
+                    controllerValue: vm.passwordController,
+                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Checkbox(
-                        value: vm.rememberMe,
-                        onChanged: vm.toggleRememberMe,
-                        activeColor: AppColors.Text_COLOR,
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: vm.rememberMe,
+                            onChanged: vm.toggleRememberMe,
+                            activeColor: AppColors.Text_COLOR,
+                          ),
+                          const Text(
+                            "Remember me",
+                            style: TextStyle(color: Colors.black54),
+                          ),
+                        ],
                       ),
-                      const Text(
-                        "Remember me",
-                        style: TextStyle(color: Colors.black54),
-                      )
+                      InkWell(
+                        onTap: () => vm.goToForgotPassword(context),
+                        child: Text(
+                          'Forgot password?',
+                          style: TextStyle(
+                            color: AppColors.TextMUSTARD_COLOR,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  InkWell(
-                    onTap: () => vm.goToForgotPassword(context),
-                    child: Text(
-                      'Forgot password?',
-                      style: TextStyle(
-                        color: AppColors.TextMUSTARD_COLOR,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
+                  const SizedBox(height: 13),
+                  CustomButton(
+                    buttonText: 'Login',
+                    isEnabled: vm.isDataFilled,
+                    isLoading: vm.isLoading,
+                    onPressed: vm.isLoading
+                        ? null
+                        : () => vm.onAdminLoginClicked(context),
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
-              const SizedBox(height: 13),
-              CustomButton(
-                buttonText: 'Login',
-                isEnabled: vm.isDataFilled,
-                isLoading: vm.isLoading,
-                onPressed:
-                    vm.isLoading ? null : () => vm.onAdminLoginClicked(context),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account? ",
-                    style: TextStyle(color: AppColors.TextFIELD_EYE_COLOR),
-                  ),
-                  InkWell(
-                    onTap: () => vm.goToSignUp(context),
-                    child: Text(
-                      'Create an account.',
-                      style: TextStyle(
-                        color: AppColors.TextMUSTARD_COLOR,
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 40.h),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.TextFIELD_EYE_COLOR, // Line color
-                      thickness: 2, // Line thickness
-                      endIndent: 8, // Space at the end of the line
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      "or Signup using",
-                      style: TextStyle(color: AppColors.TextFIELD_EYE_COLOR),
-                    ),
-                  ),
-                  Expanded(
-                    child: Divider(
-                      color: AppColors.TextFIELD_EYE_COLOR, // Line color
-                      thickness: 2, // Line thickness
-                      indent: 8, // Space at the start of the line
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: Image.asset('assets/images/facebook_icon.png'),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Image.asset('assets/images/google.png'),
-                    onPressed: () {},
-                  ),
-                  IconButton(
-                    icon: Image.asset('assets/images/twitter icon.png'),
-                    onPressed: () {},
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ),
       );

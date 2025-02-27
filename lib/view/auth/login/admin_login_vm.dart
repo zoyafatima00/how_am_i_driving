@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:how_am_i_driving/view/start/login_splash.dart';
 
 import '../../../data/base_vm.dart';
 import '../../../data/repo/auth_repo.dart';
@@ -7,7 +8,6 @@ import '../../../helpers/pref_init.dart';
 import '../../../utils/shared_prefs_keys.dart';
 import '../../../widgets/my_snackbar.dart';
 import '../../bottom_nav/admin_bottom_nav.dart';
-import '../../bottom_nav/bottom_nav_screen.dart';
 import '../forgot_password/forgotPassword_screen.dart';
 import '../signup/signup_screen.dart';
 
@@ -41,6 +41,10 @@ class AdminLoginVm extends BaseVm {
 
   void goToForgotPassword(BuildContext context) {
     Navigator.pushNamed(context, ForgotPasswordScreen.route);
+  }
+
+  void onBackArrow(BuildContext context) {
+    Navigator.pushNamed(context, LoginOptionScreen.route);
   }
 
   void goToSignUp(BuildContext context) {

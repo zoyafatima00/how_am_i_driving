@@ -108,17 +108,17 @@ class AdminViolationScreen extends StatelessWidget {
                   children: [
                     ViolationCard(
                       onTap: () {
-                        //vm.onHistoryProfileClicked(context);
+                        vm.onHistoryProfileClicked(context);
                       },
                     ),
                     ViolationCard(
                       onTap: () {
-                        //vm.onHistoryProfileClicked(context);
+                        vm.onHistoryProfileClicked(context);
                       },
                     ),
                     ViolationCard(
                       onTap: () {
-                        //vm.onHistoryProfileClicked(context);
+                        vm.onHistoryProfileClicked(context);
                       },
                     ),
                   ],

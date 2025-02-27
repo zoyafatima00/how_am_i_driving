@@ -7,6 +7,7 @@ import '../../../helpers/pref_init.dart';
 import '../../../utils/shared_prefs_keys.dart';
 import '../../../widgets/my_snackbar.dart';
 import '../../bottom_nav/bottom_nav_screen.dart';
+import '../../start/login_splash.dart';
 import '../forgot_password/forgotPassword_screen.dart';
 import '../signup/signup_screen.dart';
 
@@ -31,6 +32,10 @@ class LoginVm extends BaseVm {
     passwordController.addListener(() {
       notifyListeners();
     });
+  }
+
+  void onBackArrow(BuildContext context) {
+    Navigator.pushNamed(context, LoginOptionScreen.route);
   }
 
   void toggleRememberMe(bool? value) {

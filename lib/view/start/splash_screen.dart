@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
         // Use WidgetsBinding to trigger navigation after the current build is finished
         WidgetsBinding.instance.addPostFrameCallback((_) {
           // Call the method to navigate after the widget has been built
-          vm.goToLogin(context);
+          vm.goToLoginOption(context);
         });
 
         return Scaffold(
