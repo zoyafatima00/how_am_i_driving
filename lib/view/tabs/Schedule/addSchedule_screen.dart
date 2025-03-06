@@ -193,7 +193,7 @@ class AddScheduleScreen extends StatelessWidget {
                   isEnabled: vm.isDataFilled,
                   buttonText: 'Add Ride',
                   onPressed: () {
-                    // Implement the add ride functionality
+                    vm.onAddRideClicked(context);
                   },
                 ),
                 SizedBox(height: 20.h),

@@ -1,14 +1,15 @@
+import 'dart:io'; // Import for File
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../utils/color_resources.dart';
 
 class ViewVehicleCard extends StatelessWidget {
-  final String vehicleName; // Driver's name passed from the parent screen
-  final String vehicleNumber; // Driver's name passed from the parent screen
-  final String
-      vehicleImage; // Image URL or asset path passed from the parent screen
-  final VoidCallback onTap; // Function to execute on tap
+  final String vehicleName;
+  final String vehicleNumber;
+  final File? vehicleImage; // Use File for the vehicle image
+  final VoidCallback onTap;
 
   const ViewVehicleCard({
     super.key,
@@ -21,7 +22,7 @@ class ViewVehicleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap, // Triggers the onTap function when the container is tapped
+      onTap: onTap,
       child: Container(
         margin: EdgeInsets.only(bottom: 16.h),
         padding: EdgeInsets.all(16.w),
@@ -42,25 +43,31 @@ class ViewVehicleCard extends StatelessWidget {
             children: [
               ClipOval(
                 child: Container(
-                  width: 36.w, // Set the size of the avatar (adjust as needed)
-                  height: 36.w, // Set the size of the avatar (adjust as needed)
+                  width: 36.w,
+                  height: 36.w,
                   decoration: BoxDecoration(
                     color: Colors.blue,
                     shape: BoxShape.circle,
                   ),
-                  child: Image.asset(vehicleImage,
-                      fit: BoxFit.cover, alignment: Alignment.bottomRight),
+                  child: vehicleImage != null
+                      ? Image.file(
+                          vehicleImage!, // Use the File object
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        )
+                      : Image.asset(
+                          'assets/images/modern-black-delivery-van_1311569-447.png', // Fallback image
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        ),
                 ),
               ),
-
-              SizedBox(width: 16.w), // Space between image and text
-
-              // Column for Driver's Name
+              SizedBox(width: 16.w),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    vehicleName, // Using the dynamic name passed
+                    vehicleName,
                     style: TextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
@@ -68,11 +75,9 @@ class ViewVehicleCard extends StatelessWidget {
                       color: AppColors.Text_COLOR,
                     ),
                   ),
-                  SizedBox(
-                    height: 3.h,
-                  ),
+                  SizedBox(height: 3.h),
                   Text(
-                    vehicleNumber, // Using the dynamic name passed
+                    vehicleNumber,
                     style: TextStyle(
                       fontSize: 14.sp,
                       fontFamily: 'Arial',
@@ -81,28 +86,25 @@ class ViewVehicleCard extends StatelessWidget {
                   ),
                 ],
               ),
-
-              // Right side: Action Icons (view, edit, delete)
-              Spacer(), // Pushes the icons to the right side
+              Spacer(),
               Row(
                 children: [
                   Icon(
-                    Icons.remove_red_eye, // Eye icon for viewing
+                    Icons.remove_red_eye,
                     size: 20.sp,
                     color: AppColors.Text_COLOR,
                   ),
                   SizedBox(width: 8.w),
                   Icon(
-                    Icons.edit, // Pencil icon for editing
+                    Icons.edit,
                     size: 20.sp,
                     color: AppColors.Text_COLOR,
                   ),
                   SizedBox(width: 8.w),
                   Icon(
-                    Icons.delete_rounded, // Trash bin icon for deletion
+                    Icons.delete_rounded,
                     size: 20.sp,
-                    color:
-                        AppColors.Text_COLOR, // Red color for the delete icon
+                    color: AppColors.Text_COLOR,
                   ),
                 ],
               ),

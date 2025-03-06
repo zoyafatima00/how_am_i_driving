@@ -15,32 +15,48 @@ class ViewVehicleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ViewVehicleScreenVm>(builder: (context, vm, _) {
+      // Fetch vehicle details if it's empty
+      if (vm.vehicleNames.isEmpty) {
+        vm.fetchVehicleDetails(
+            context); // Fetch the data if not already fetched
+      }
+
+      // Debugging: Print vehicleNames and vehicleNumbers here
+      print("Vehicle Names: ${vm.vehicleNames}");
+      print("Vehicle Numbers: ${vm.vehicleNumbers}");
+
+      // Show a loading spinner if the data is still being fetched
+      if (vm.vehicleNames.isEmpty) {
+        return Center(child: CircularProgressIndicator());
+      }
+
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back), // Back button icon
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
-              Navigator.pop(context); // Navigate back to the HomeScreen
+              Navigator.pop(context);
             },
           ),
           actions: [
-            const Spacer(),
             const Spacer(),
             Text.rich(
               TextSpan(
                 text: 'How am I ',
                 style: const TextStyle(
-                    fontSize: 23,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold),
+                  fontSize: 23,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
                 children: <TextSpan>[
                   TextSpan(
                     text: 'Driving?',
                     style: TextStyle(
-                        fontSize: 23,
-                        color: AppColors.TextMUSTARD_COLOR,
-                        fontFamily: 'Pacifico',
-                        fontWeight: FontWeight.normal),
+                      fontSize: 23,
+                      color: AppColors.TextMUSTARD_COLOR,
+                      fontFamily: 'Pacifico',
+                      fontWeight: FontWeight.normal,
+                    ),
                   ),
                 ],
               ),
@@ -76,14 +92,12 @@ class ViewVehicleScreen extends StatelessWidget {
             ),
           ],
           elevation: 0,
-          flexibleSpace: const SizedBox(),
           backgroundColor: AppColors.Text_COLOR,
         ),
         backgroundColor: Colors.white,
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.0.w),
           child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
             child: Column(
               children: [
                 SizedBox(height: 14.h),
@@ -92,7 +106,7 @@ class ViewVehicleScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         "Vehicles",
-                        textAlign: TextAlign.center, // Centers the text itself
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
@@ -153,27 +167,29 @@ class ViewVehicleScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 23.h),
-                Column(
-                  children: [
-                    ViewVehicleCard(
-                      vehicleName: 'Vehicle\'s name',
-                      vehicleImage:
-                          'assets/images/modern-black-delivery-van_1311569-447.png',
-                      onTap: () {
-                        vm.onViewVehicleProfileClicked(context);
+                // Display the list of vehicles
+                Consumer<ViewVehicleScreenVm>(
+                  builder: (context, vm, _) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: vm.vehicleNames.length,
+                      itemBuilder: (context, index) {
+                        final vehicleName = vm.vehicleNames[index];
+                        final vehicleNumber = vm.vehicleNumbers[index];
+                        final vehicleImage = vm.vehicleImages[vehicleNumber];
+
+                        return ViewVehicleCard(
+                          vehicleName: vehicleName,
+                          vehicleNumber: vehicleNumber,
+                          vehicleImage: vehicleImage, // Pass the File object
+                          onTap: () {
+                            vm.onViewVehicleProfileClicked(context);
+                          },
+                        );
                       },
-                      vehicleNumber: 'Vehicle\'s number',
-                    ),
-                    ViewVehicleCard(
-                      vehicleName: 'Vehicle\'s name',
-                      vehicleImage:
-                          'assets/images/modern-black-delivery-van_1311569-447.png',
-                      onTap: () {
-                        vm.onViewVehicleProfileClicked(context);
-                      },
-                      vehicleNumber: 'Vehicle\'s number',
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ],
             ),

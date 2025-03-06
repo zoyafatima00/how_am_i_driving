@@ -207,7 +207,7 @@ class AddDriverScreenVm extends BaseVm {
     });
   }
 
-  // API call for registering a new user
+  // API call for registering a new driver
   addNewDriver(AddDriverBody body, File imageFile, Function callBack) async {
     _isLoading = true;
     notifyListeners();

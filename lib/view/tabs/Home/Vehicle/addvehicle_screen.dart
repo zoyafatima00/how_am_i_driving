@@ -407,7 +407,7 @@ class AddVehicleScreen extends StatelessWidget {
                   isEnabled: vm.isDataFilled,
                   buttonText: 'Add Vehicle',
                   onPressed: () {
-                    // Add your logic for adding vehicle
+                    vm.onAddVehicleClicked(context);
                   },
                 ),
               ],
