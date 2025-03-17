@@ -209,7 +209,7 @@ class AuthRepo {
       {String? vehicleName, String? driverName, String? address}) async {
     try {
       final response = await dioClient.get(
-        ApiEndPoints.VEHICLE_DETAILS_URI,
+        ApiEndPoints.RIDE_DETAILS_URI,
         queryParameters: {
           if (vehicleName != null) 'vehicle_name': vehicleName,
           if (driverName != null) 'driver_name': driverName,

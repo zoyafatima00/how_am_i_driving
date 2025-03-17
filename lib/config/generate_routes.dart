@@ -244,10 +244,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               child: const ScheduleScreen()));
 
     case ViewScheduleProfileScreen.route:
+      final Map<String, dynamic> rideDetails =
+          settings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
-          builder: (context) => ChangeNotifierProvider(
-              create: (context) => ViewScheduleProfileScreenVm(),
-              child: ViewScheduleProfileScreen()));
+        builder: (context) => ChangeNotifierProvider(
+          create: (context) => ViewScheduleProfileScreenVm(),
+          child: ViewScheduleProfileScreen(rideDetails: rideDetails),
+        ),
+      );
 
     case AddScheduleScreen.route:
       return MaterialPageRoute(

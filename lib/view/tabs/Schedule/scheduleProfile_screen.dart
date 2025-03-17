@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:how_am_i_driving/view/tabs/Schedule/scheduleProfile_vm.dart';
+import 'package:intl/intl.dart'; // Add this import
 import 'package:provider/provider.dart';
 
 import '../../../utils/color_resources.dart';
 
 class ViewScheduleProfileScreen extends StatelessWidget {
   static const route = '/ViewScheduleProfileScreen';
+
+  final Map<String, dynamic> rideDetails;
+
+  const ViewScheduleProfileScreen({super.key, required this.rideDetails});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<ViewScheduleProfileScreenVm>(builder: (context, vm, _) {
+      String formattedDate = _formatDate(rideDetails['date']);
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -142,7 +149,7 @@ class ViewScheduleProfileScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             Text(
-                              "Ride Number",
+                              "Ride Number: ${rideDetails['id']}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18.sp,
@@ -152,7 +159,7 @@ class ViewScheduleProfileScreen extends StatelessWidget {
                             ),
                             SizedBox(height: 4.h),
                             Text(
-                              "Date",
+                              "Date: $formattedDate", // Use the formatted date here
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 color: Colors.white,
@@ -160,7 +167,7 @@ class ViewScheduleProfileScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Time",
+                              "Time: ${rideDetails['time']}",
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 color: Colors.white,
@@ -171,14 +178,22 @@ class ViewScheduleProfileScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 16.h),
-                      _buildSection("Driver", ["Driver's ID", "Driver's Name"]),
+                      _buildSection("Driver", [
+                        "Driver's ID: ${rideDetails['driver_id']}",
+                        "Driver's Name: ${rideDetails['driver_name']}"
+                      ]),
+                      _buildSection("Vehicle", [
+                        "Vehicle's ID: ${rideDetails['vehicle_number']}",
+                        "Vehicle's Name: ${rideDetails['vehicle_name']}"
+                      ]),
                       _buildSection(
-                          "Vehicle", ["Vehicle's ID", "Vehicle's Name"]),
-                      _buildSection("Task", ["Details"]),
-                      _buildSection("Address", ["Address"]),
+                          "Task", ["Details: ${rideDetails['task']}"]),
                       _buildSection(
-                          "Supervisor", ["Sup.'s ID", "Supervisor's Name"]),
-                      _buildSection("Time Allocated", ["Time"]),
+                          "Address", ["Address: ${rideDetails['address']}"]),
+                      _buildSection("Supervisor",
+                          ["Supervisor's Name: ${rideDetails['supervisor']}"]),
+                      _buildSection("Time Allocated",
+                          ["Time: ${rideDetails['allocated_time_for_task']}"]),
                     ],
                   ),
                 ),
@@ -205,9 +220,7 @@ class ViewScheduleProfileScreen extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          SizedBox(
-            height: 5.h,
-          ),
+          SizedBox(height: 5.h),
           Wrap(
             spacing: 12.w,
             children: values
@@ -217,15 +230,25 @@ class ViewScheduleProfileScreen extends StatelessWidget {
                         fontSize: 15.sp,
                         color: Colors.white,
                         decoration: TextDecoration.underline,
+                        decorationColor:
+                            Colors.white, // Set underline color explicitly
                       ),
                     ))
                 .toList(),
           ),
-          SizedBox(
-            height: 5.h,
-          ),
+          SizedBox(height: 5.h),
         ],
       ),
     );
+  }
+
+  // Helper method to format the date
+  String _formatDate(String dateString) {
+    try {
+      DateTime dateTime = DateTime.parse(dateString);
+      return DateFormat('yyyy-MM-dd').format(dateTime);
+    } catch (e) {
+      return dateString; // Return the original string if parsing fails
+    }
   }
 }

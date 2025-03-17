@@ -190,7 +190,7 @@ class ViewScheduleScreen extends StatelessWidget {
                               dropOffLocation:
                                   ride['address'] ?? 'Drop Off Location',
                               onTap: () {
-                                vm.onViewScheduleProfileClicked(context);
+                                vm.onViewScheduleProfileClicked(context, ride);
                               },
                             );
                           }).toList(),
