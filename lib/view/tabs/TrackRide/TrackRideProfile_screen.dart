@@ -7,6 +7,10 @@ import 'TrackRideProfile_vm.dart';
 
 class TrackRideProfileScreen extends StatelessWidget {
   static const route = '/TrackRideProfileScreen';
+  final Map<String, dynamic> rideDetails;
+
+  const TrackRideProfileScreen({super.key, required this.rideDetails});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<TrackRideProfileVm>(builder: (context, vm, _) {
@@ -77,7 +81,7 @@ class TrackRideProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 18.h),
-                // Title
+// Title
                 Text(
                   "Track Ride",
                   style: TextStyle(
@@ -165,7 +169,7 @@ Widget _buildViewReport() {
     title: 'View Report',
     child: GestureDetector(
       onTap: () {
-        // Handle "View Report" action
+// Handle "View Report" action
       },
       child: Text(
         'View Report',

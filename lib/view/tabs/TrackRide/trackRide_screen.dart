@@ -13,57 +13,56 @@ class TrackRideScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TrackRideScreenVm>(builder: (context, vm, _) {
-      return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: Column(
-              children: [
-                SizedBox(height: 14.h),
-                // Title
-                Text(
-                  "Track Ride",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Arial',
-                      color: AppColors.Text_COLOR),
-                ),
-                SizedBox(height: 25.h),
+    return ChangeNotifierProvider(
+      create: (context) => TrackRideScreenVm()..fetchRideDetails(),
+      child: Consumer<TrackRideScreenVm>(builder: (context, vm, _) {
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(height: 14.h),
+                  // Title
+                  Text(
+                    "Track Ride",
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Arial',
+                        color: AppColors.Text_COLOR),
+                  ),
+                  SizedBox(height: 25.h),
 
-                // Violation Records List
-                Column(
-                  children: [
-                    TrackRideCard(
-                      onTap: () {
-                        vm.onTrackRideProfileClicked(context);
-                      },
-                    ),
-                    TrackRideCard(
-                      onTap: () {
-                        vm.onTrackRideProfileClicked(context);
-                      },
-                    ),
-                    TrackRideCard(
-                      onTap: () {
-                        vm.onTrackRideProfileClicked(context);
-                      },
-                    ),
-                    TrackRideCard(
-                      onTap: () {
-                        vm.onTrackRideProfileClicked(context);
-                      },
-                    ),
-                  ],
-                ),
-              ],
+                  // Rides List
+                  vm.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : Column(
+                          children: vm.rideList.map((ride) {
+                            return TrackRideCard(
+                              driverName:
+                                  ride['driver_name'] ?? 'Driver\'s Name',
+                              vehicleName:
+                                  ride['vehicle_name'] ?? 'Vehicle\'s Name',
+                              dropoffLocation:
+                                  ride['address'] ?? 'Drop Off Location',
+                              onTap: () {
+                                vm.onTrackRideProfileClicked(context, ride);
+                              },
+                              onDetailsTap: () {
+                                vm.onTrackRideProfileClicked(context, ride);
+                              },
+                            );
+                          }).toList(),
+                        ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }

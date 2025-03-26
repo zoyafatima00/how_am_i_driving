@@ -11,6 +11,10 @@ class ViewVehicleProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, String> arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+    final String vehicleName = arguments['vehicleName'] ?? 'Unknown Vehicle';
+    final String vehicleNumber = arguments['vehicleNumber'] ?? 'Unknown Number';
     return Consumer<ViewVehicleProfileScreenVm>(builder: (context, vm, _) {
       return Scaffold(
         appBar: AppBar(
@@ -120,7 +124,7 @@ class ViewVehicleProfileScreen extends StatelessWidget {
                 Column(
                   children: [
                     Text(
-                      'Suzuki Bolan',
+                      vehicleName,
                       style: TextStyle(
                           fontSize: 18.sp,
                           fontWeight: FontWeight.bold,
@@ -128,18 +132,11 @@ class ViewVehicleProfileScreen extends StatelessWidget {
                           color: AppColors.TextFIELD_EYE_COLOR),
                     ),
                     SizedBox(height: 4.h),
-                    Text('Vehicle\'s Number',
+                    Text(vehicleNumber,
                         style: TextStyle(
                             fontSize: 14.sp,
                             fontFamily: 'Arial',
                             color: AppColors.TextFIELD_EYE_COLOR)),
-                    SizedBox(height: 6.h),
-                    Text('view more details',
-                        style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            fontSize: 14.sp,
-                            fontFamily: 'Arial',
-                            color: AppColors.TextMUSTARD_COLOR)),
                     SizedBox(height: 14.h),
                     Text('Total Number of Rides',
                         style: TextStyle(

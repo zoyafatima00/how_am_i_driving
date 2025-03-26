@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:how_am_i_driving/widgets/trackRideCared_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/app_constants.dart';
 import '../../../utils/color_resources.dart';
+import '../../../widgets/violationCard_widget.dart';
 import 'admin_ride_history_vm.dart';
 
 class AdminRideHistoryScreen extends StatelessWidget {
@@ -165,15 +165,12 @@ class AdminRideHistoryScreen extends StatelessWidget {
                 // Violation Records List
                 Column(
                   children: [
-                    TrackRideCard(onTap: () {
-                      vm.onHistoryCardClicked(context);
-                    }),
-                    TrackRideCard(onTap: () {
-                      vm.onHistoryCardClicked(context);
-                    }),
-                    TrackRideCard(onTap: () {
-                      vm.onHistoryCardClicked(context);
-                    }),
+                    ViolationCard(
+                      onTap: () {},
+                    ),
+                    ViolationCard(
+                      onTap: () {},
+                    ),
                   ],
                 ),
               ],

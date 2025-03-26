@@ -184,7 +184,8 @@ class ViewVehicleScreen extends StatelessWidget {
                           vehicleNumber: vehicleNumber,
                           vehicleImage: vehicleImage, // Pass the File object
                           onTap: () {
-                            vm.onViewVehicleProfileClicked(context);
+                            vm.onViewVehicleProfileClicked(
+                                context, vehicleName, vehicleNumber);
                           },
                         );
                       },

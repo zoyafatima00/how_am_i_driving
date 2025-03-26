@@ -4,8 +4,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../utils/color_resources.dart';
 
 class TrackRideCard extends StatelessWidget {
-  final VoidCallback onTap;
-  const TrackRideCard({super.key, required this.onTap});
+  final VoidCallback onTap; // Callback for the entire card
+  final VoidCallback onDetailsTap; // Callback for the "View Details" button
+  final String driverName;
+  final String vehicleName;
+  final String dropoffLocation;
+
+  const TrackRideCard({
+    super.key,
+    required this.onTap,
+    required this.onDetailsTap,
+    required this.driverName,
+    required this.vehicleName,
+    required this.dropoffLocation,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +42,12 @@ class TrackRideCard extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Left column: Type of violation, Driver's name, and Vehicle's name
+              // Left column: Driver's name, Vehicle's name, and Dropoff location
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Driver's Name", // Replace with dynamic data
+                    driverName,
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -44,7 +56,7 @@ class TrackRideCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    "Vehicle's Name", // Replace with dynamic data
+                    vehicleName,
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -53,7 +65,7 @@ class TrackRideCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    "Dropoff Location", // Replace with dynamic data
+                    dropoffLocation,
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -65,7 +77,7 @@ class TrackRideCard extends StatelessWidget {
 
               // Right column: View Details button
               ElevatedButton(
-                onPressed: () {}, // Add your action for "View Details"
+                onPressed: onDetailsTap, // Use the custom callback
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.Text_COLOR,
                   shape: RoundedRectangleBorder(

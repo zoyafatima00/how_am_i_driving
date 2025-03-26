@@ -75,7 +75,15 @@ class ViewVehicleScreenVm extends BaseVm {
   }
 
   // Navigate to vehicle profile screen
-  void onViewVehicleProfileClicked(BuildContext context) {
-    Navigator.pushNamed(context, ViewVehicleProfileScreen.route);
+  void onViewVehicleProfileClicked(
+      BuildContext context, String vehicleName, String vehicleNumber) {
+    Navigator.pushNamed(
+      context,
+      ViewVehicleProfileScreen.route,
+      arguments: {
+        'vehicleName': vehicleName,
+        'vehicleNumber': vehicleNumber,
+      },
+    );
   }
 }

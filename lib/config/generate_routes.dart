@@ -13,6 +13,8 @@ import '../view/AdminTabs/History/admin_ride_history_screen.dart';
 import '../view/AdminTabs/History/admin_ride_history_vm.dart';
 import '../view/AdminTabs/Home/admin_home_screen.dart';
 import '../view/AdminTabs/Home/admin_home_vm.dart';
+import '../view/AdminTabs/LiveStreaming/live_streaming_screen.dart';
+import '../view/AdminTabs/LiveStreaming/live_streaming_vm.dart';
 import '../view/AdminTabs/Schedule/admin_schedule.dart';
 import '../view/AdminTabs/Schedule/admin_schedule_profile_screen.dart';
 import '../view/AdminTabs/Schedule/admin_schedule_profile_vm.dart';
@@ -229,12 +231,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       );
 
     case ViewVehicleProfileScreen.route:
+      final Map<String, String> arguments =
+          settings.arguments as Map<String, String>;
       return MaterialPageRoute(
         builder: (context) => ChangeNotifierProvider(
-          create: (context) =>
-              ViewVehicleProfileScreenVm(), // Provide ViewDriverScreenVm here
-          child: const ViewVehicleProfileScreen(),
+          create: (context) => ViewVehicleProfileScreenVm(),
+          child: ViewVehicleProfileScreen(),
         ),
+        settings: settings, // Pass the settings to the route
       );
 
     case ScheduleScreen.route:
@@ -242,16 +246,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           builder: (context) => ChangeNotifierProvider(
               create: (context) => ScheduleScreenVm(),
               child: const ScheduleScreen()));
-
-    case ViewScheduleProfileScreen.route:
-      final Map<String, dynamic> rideDetails =
-          settings.arguments as Map<String, dynamic>;
-      return MaterialPageRoute(
-        builder: (context) => ChangeNotifierProvider(
-          create: (context) => ViewScheduleProfileScreenVm(),
-          child: ViewScheduleProfileScreen(rideDetails: rideDetails),
-        ),
-      );
 
     case AddScheduleScreen.route:
       return MaterialPageRoute(
@@ -265,6 +259,16 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               create: (context) => ViewScheduleScreenVm(),
               child: const ViewScheduleScreen()));
 
+    case ViewScheduleProfileScreen.route:
+      final Map<String, dynamic> rideDetails =
+          settings.arguments as Map<String, dynamic>;
+      return MaterialPageRoute(
+        builder: (context) => ChangeNotifierProvider(
+          create: (context) => ViewScheduleProfileScreenVm(),
+          child: ViewScheduleProfileScreen(rideDetails: rideDetails),
+        ),
+      );
+
     case TrackRideScreen.route:
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
@@ -272,10 +276,18 @@ Route<dynamic> generateRoute(RouteSettings settings) {
               child: const TrackRideScreen()));
 
     case TrackRideProfileScreen.route:
+      final Map<String, dynamic> rideDetails =
+          settings.arguments as Map<String, dynamic>;
       return MaterialPageRoute(
           builder: (context) => ChangeNotifierProvider(
               create: (context) => TrackRideProfileVm(),
-              child: TrackRideProfileScreen()));
+              child: TrackRideProfileScreen(rideDetails: rideDetails)));
+
+    case LiveStreamingScreen.route:
+      return MaterialPageRoute(
+          builder: (context) => ChangeNotifierProvider(
+              create: (context) => LiveStreamingVm(),
+              child: LiveStreamingScreen()));
 
     case HistoryScreen.route:
       return MaterialPageRoute(

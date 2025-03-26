@@ -76,6 +76,15 @@ class AdminHomeScreen extends StatelessWidget {
                           vm.onRideHistoryClicked(context);
                         },
                       ),
+                      SizedBox(height: 20.h),
+                      AdminActionCard(
+                        title: "Live Streaming",
+                        iconPath: 'assets/images/live_streaming_icon.png',
+                        cardColor: AppColors.HISTORY_CARD_COLOR,
+                        onTap: () {
+                          vm.onLiveStreamingClicked(context);
+                        },
+                      ),
                     ],
                   ),
                 ],
