@@ -1,19 +1,98 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:geocoding/geocoding.dart'; // Add this package
+import 'package:geolocator/geolocator.dart'; // Add this package
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/color_resources.dart';
 import 'TrackRideProfile_vm.dart';
 
-class TrackRideProfileScreen extends StatelessWidget {
+class TrackRideProfileScreen extends StatefulWidget {
   static const route = '/TrackRideProfileScreen';
   final Map<String, dynamic> rideDetails;
 
   const TrackRideProfileScreen({super.key, required this.rideDetails});
 
   @override
+  _TrackRideProfileScreenState createState() => _TrackRideProfileScreenState();
+}
+
+class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
+  String _currentLocation =
+      'Fetching location...'; // Variable to store the current location
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation(); // Fetch the current location when the screen loads
+  }
+
+  // Method to fetch the current location
+  Future<void> _getCurrentLocation() async {
+    try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        setState(() {
+          _currentLocation = 'Location services are disabled';
+        });
+        return;
+      }
+
+      // Check location permissions
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          setState(() {
+            _currentLocation = 'Location permissions are denied';
+          });
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        setState(() {
+          _currentLocation = 'Location permissions are permanently denied';
+        });
+        return;
+      }
+
+      // Fetch the current position
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+
+      // Convert coordinates to a human-readable address
+      List<Placemark> placemarks = await placemarkFromCoordinates(
+        position.latitude,
+        position.longitude,
+      );
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        setState(() {
+          _currentLocation = 'City: ${place.locality}, Street: ${place.street}';
+        });
+      } else {
+        setState(() {
+          _currentLocation = 'Unable to fetch address';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _currentLocation = 'Error fetching location: $e';
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<TrackRideProfileVm>(builder: (context, vm, _) {
+      String formattedDate = _formatDate(widget.rideDetails['date']);
+      // Log the rideDetails for debugging
+      print("Ride Details in TrackRideProfileScreen: ${widget.rideDetails}");
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -81,7 +160,7 @@ class TrackRideProfileScreen extends StatelessWidget {
             child: Column(
               children: [
                 SizedBox(height: 18.h),
-// Title
+                // Title
                 Text(
                   "Track Ride",
                   style: TextStyle(
@@ -91,7 +170,7 @@ class TrackRideProfileScreen extends StatelessWidget {
                       color: AppColors.Text_COLOR),
                 ),
                 SizedBox(height: 20.h),
-                _buildTrackDetails(),
+                _buildTrackDetails(widget.rideDetails),
                 SizedBox(height: 20.h),
                 _buildTrackVideo(),
                 SizedBox(height: 20.h),
@@ -104,27 +183,45 @@ class TrackRideProfileScreen extends StatelessWidget {
       );
     });
   }
+
+  // Updated method to display the real current location
+  Widget _buildCurrentLocation() {
+    return BlueCardWidget(
+      title: 'Current Location',
+      child: Padding(
+        padding:
+            const EdgeInsets.symmetric(vertical: 8.0), // Consistent padding
+        child: Text(
+          _currentLocation, // Display the fetched location
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'Arial',
+            fontSize: 16.sp, // Consistent font size
+          ),
+        ),
+      ),
+    );
+  }
 }
 
-Widget _buildTrackDetails() {
+// Accept rideDetails as a parameter
+Widget _buildTrackDetails(Map<String, dynamic> rideDetails) {
   return BlueCardWidget(
     title: 'Ride Details',
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildDetailRow('Ride Id', '123456789'),
+        _buildDetailRow('Ride Id', '${rideDetails['id']}'),
         _buildDetailRow('Date & Time', '2025-02-10 12:00 PM'),
         Divider(),
-        _buildDetailRow('Driver Id', 'driver12345'),
-        _buildDetailRow('Driver Name', 'John Doe'),
+        _buildDetailRow('Driver Id', '${rideDetails['driver_id']}'),
+        _buildDetailRow('Driver Name', '${rideDetails['driver_name']}'),
         Divider(),
-        _buildDetailRow('Driver Id', 'driver12345'),
-        _buildDetailRow('Driver Name', 'John Doe'),
-        _buildDetailRow('Vehicle Id', 'vehicle12345'),
-        _buildDetailRow('Vehicle Name', 'Honda Civic'),
+        _buildDetailRow('Vehicle Id', '${rideDetails['vehicle_number']}'),
+        _buildDetailRow('Vehicle Name', '${rideDetails['vehicle_name']}'),
         Divider(),
-        _buildDetailRow('Task', 'Over Speeding'),
-        _buildDetailRow('Task Details', 'Speed exceeded 20 km/h over limit'),
+        _buildDetailRow('Task', '${rideDetails['task']}'),
+        _buildDetailRow('Address', '${rideDetails['address']}'),
       ],
     ),
   );
@@ -169,7 +266,7 @@ Widget _buildViewReport() {
     title: 'View Report',
     child: GestureDetector(
       onTap: () {
-// Handle "View Report" action
+        // Handle "View Report" action
       },
       child: Text(
         'View Report',
@@ -177,6 +274,16 @@ Widget _buildViewReport() {
       ),
     ),
   );
+}
+
+// Helper method to format the date
+String _formatDate(String dateString) {
+  try {
+    DateTime dateTime = DateTime.parse(dateString);
+    return DateFormat('yyyy-MM-dd').format(dateTime);
+  } catch (e) {
+    return dateString; // Return the original string if parsing fails
+  }
 }
 
 Widget _buildDetailRow(String label, String value) {

@@ -8,9 +8,7 @@ import 'admin_home_vm.dart'; // Import the StatusCard widget
 
 class AdminHomeScreen extends StatelessWidget {
   static const route = '/AdminHomeScreen';
-
   const AdminHomeScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminHomeScreenVm>(builder: (context, vm, _) {
@@ -49,7 +47,7 @@ class AdminHomeScreen extends StatelessWidget {
                       AdminActionCard(
                         title: "Rides' Schedule",
                         iconPath: 'assets/images/calendar-days-solid.png',
-                        cardColor: AppColors.Text_COLOR, // Customize the color
+                        cardColor: AppColors.Text_COLOR,
                         onTap: () {},
                       ),
                       SizedBox(height: 20.h),

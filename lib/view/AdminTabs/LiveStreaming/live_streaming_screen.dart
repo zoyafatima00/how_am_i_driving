@@ -10,7 +10,6 @@ import '../../../utils/color_resources.dart';
 
 class LiveStreamingScreen extends StatefulWidget {
   static const route = '/LiveStreamingScreen';
-
   @override
   _LiveStreamingScreenState createState() => _LiveStreamingScreenState();
 }
@@ -21,7 +20,6 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen> {
   Uint8List? _processedFrame;
   bool _isConnected = false;
   Timer? _frameTimer;
-
   @override
   void initState() {
     super.initState();
@@ -35,10 +33,8 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen> {
       autoPlay: true,
       options: VlcPlayerOptions(),
     );
-
     // 2. Connect to WebSocket
     _connectWebSocket();
-
     // 3. Start frame capture
     _startFrameCapture();
   }
@@ -47,7 +43,6 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen> {
     _channel = WebSocketChannel.connect(
       Uri.parse('ws://192.168.18.30:8000/ws/video-feed'),
     );
-
     _channel.stream.listen(
       (data) {
         if (data is Uint8List) {
@@ -67,10 +62,8 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen> {
 
   void _startFrameCapture() {
     const frameInterval = Duration(milliseconds: 100); // 10 FPS
-
     _frameTimer = Timer.periodic(frameInterval, (_) async {
       if (!_vlcController.value.isInitialized) return;
-
       try {
         final snapshot = await _vlcController.takeSnapshot();
         if (snapshot != null && _channel.sink != null) {

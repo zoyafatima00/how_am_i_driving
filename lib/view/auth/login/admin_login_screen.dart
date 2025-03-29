@@ -9,30 +9,26 @@ import 'admin_login_vm.dart';
 
 class AdminLoginScreen extends StatelessWidget {
   static const route = '/AdminLoginScreen';
-
   const AdminLoginScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminLoginVm>(builder: (context, vm, _) {
       return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          backgroundColor: Colors.transparent, // Make the app bar transparent
+          backgroundColor: Colors.transparent,
           elevation: 0, // Removes the shadow
           leading: IconButton(
-            icon: Icon(Icons.arrow_back,
-                color: AppColors.Text_COLOR), // Back arrow icon
+            icon: Icon(Icons.arrow_back, color: AppColors.Text_COLOR),
             onPressed: () {
               vm.onBackArrow(context);
             },
           ),
         ),
         body: Center(
-          // This centers the entire body of the screen
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              maxWidth: 600.w, // Limit the width if needed
+              maxWidth: 600.w,
             ),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -47,20 +43,18 @@ class AdminLoginScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 10.h),
                   const SizedBox(height: 20),
-                  Text(
-                    'Welcome!',
-                    style: TextStyle(
-                      fontFamily: 'Arial', // Use Arial font family
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.Text_COLOR,
-                    ),
-                  ),
+                  Text('Welcome!',
+                      style: TextStyle(
+                        fontFamily: 'Arial',
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.Text_COLOR,
+                      )),
                   const SizedBox(height: 5),
                   Text(
                     'Login to your account',
                     style: TextStyle(
-                      fontFamily: 'Arial', // Use Arial font family
+                      fontFamily: 'Arial',
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
                       color: AppColors.TextFIELD_EYE_COLOR,

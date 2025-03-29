@@ -10,9 +10,7 @@ import 'signup_vm.dart';
 
 class SignUpScreen extends StatelessWidget {
   static const route = '/SignUpScreen';
-
   const SignUpScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Consumer<SignUpVm>(builder: (context, vm, _) {
@@ -24,18 +22,14 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 14.h),
                 Center(
-                  child: Text(
-                    'Create an Account!',
-                    style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.Text_COLOR,
-                    ),
-                  ),
+                  child: Text('Create an Account!',
+                      style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.Text_COLOR,
+                      )),
                 ),
                 SizedBox(height: 14.h),
-
-                // Image Upload Section
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
@@ -74,8 +68,6 @@ class SignUpScreen extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 20.h),
-
-                // Form Section
                 CustomTextField(
                   hintText: 'Full Name',
                   controllerValue: vm.fullNameController,
@@ -90,7 +82,7 @@ class SignUpScreen extends StatelessWidget {
                 ),
                 CustomDateInputField(
                   hintText: 'Date Of Birth',
-                  controller: vm.dobController, // Pass the controller here
+                  controller: vm.dobController,
                 ),
                 CustomTextField(
                   hintText: 'Address',
@@ -119,8 +111,6 @@ class SignUpScreen extends StatelessWidget {
                   isPassword: true,
                 ),
                 SizedBox(height: 20.h),
-
-                // Submit Button
                 CustomButton(
                   isLoading: vm.isLoading,
                   isEnabled: vm.isDataFilled,
