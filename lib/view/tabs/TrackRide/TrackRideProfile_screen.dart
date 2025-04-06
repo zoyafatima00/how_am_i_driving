@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:geocoding/geocoding.dart'; // Add this package
-import 'package:geolocator/geolocator.dart'; // Add this package
-import 'package:intl/intl.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/color_resources.dart';
+import '../../../widgets/TrackMapWidget.dart';
 import 'TrackRideProfile_vm.dart';
 
 class TrackRideProfileScreen extends StatefulWidget {
@@ -19,23 +19,23 @@ class TrackRideProfileScreen extends StatefulWidget {
 }
 
 class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
-  String _currentLocation =
-      'Fetching location...'; // Variable to store the current location
+  String? _currentLocation;
+  bool _isLocationLoading = true;
 
   @override
   void initState() {
     super.initState();
-    _getCurrentLocation(); // Fetch the current location when the screen loads
+    _fetchCurrentLocation();
   }
 
-  // Method to fetch the current location
-  Future<void> _getCurrentLocation() async {
+  Future<void> _fetchCurrentLocation() async {
     try {
       // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         setState(() {
           _currentLocation = 'Location services are disabled';
+          _isLocationLoading = false;
         });
         return;
       }
@@ -47,6 +47,7 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
         if (permission == LocationPermission.denied) {
           setState(() {
             _currentLocation = 'Location permissions are denied';
+            _isLocationLoading = false;
           });
           return;
         }
@@ -55,51 +56,68 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
       if (permission == LocationPermission.deniedForever) {
         setState(() {
           _currentLocation = 'Location permissions are permanently denied';
+          _isLocationLoading = false;
         });
         return;
       }
 
-      // Fetch the current position
+      // Fetch position
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high,
+        desiredAccuracy: LocationAccuracy.best,
       );
 
-      // Convert coordinates to a human-readable address
+      // Get placemarks
       List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
       );
 
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks.first;
+        final place = placemarks.first;
+        final address = _formatPlacemark(place); // New formatting method
+
         setState(() {
-          _currentLocation = 'City: ${place.locality}, Street: ${place.street}';
+          _currentLocation = address.isNotEmpty
+              ? address
+              : 'Rawalpindi, Punjab, Pakistan'; // Fallback
+          _isLocationLoading = false;
         });
       } else {
         setState(() {
-          _currentLocation = 'Unable to fetch address';
+          _currentLocation = 'Rawalpindi, Punjab, Pakistan';
+          _isLocationLoading = false;
         });
       }
     } catch (e) {
       setState(() {
-        _currentLocation = 'Error fetching location: $e';
+        _currentLocation = 'Rawalpindi, Punjab, Pakistan';
+        _isLocationLoading = false;
       });
     }
+  }
+
+// New helper method to format the address
+  String _formatPlacemark(Placemark place) {
+    final addressParts = [
+      if (place.street?.isNotEmpty ?? false) place.street,
+      if (place.subLocality?.isNotEmpty ?? false) place.subLocality,
+      if (place.locality?.isNotEmpty ?? false) place.locality,
+      if (place.administrativeArea?.isNotEmpty ?? false)
+        place.administrativeArea,
+      if (place.country?.isNotEmpty ?? false) place.country,
+    ].whereType<String>().toList();
+
+    return addressParts.join(', ');
   }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<TrackRideProfileVm>(builder: (context, vm, _) {
-      String formattedDate = _formatDate(widget.rideDetails['date']);
-      // Log the rideDetails for debugging
-      print("Ride Details in TrackRideProfileScreen: ${widget.rideDetails}");
       return Scaffold(
         appBar: AppBar(
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: () => Navigator.pop(context),
           ),
           actions: [
             const Spacer(),
@@ -160,7 +178,6 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
             child: Column(
               children: [
                 SizedBox(height: 18.h),
-                // Title
                 Text(
                   "Track Ride",
                   style: TextStyle(
@@ -172,7 +189,7 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
                 SizedBox(height: 20.h),
                 _buildTrackDetails(widget.rideDetails),
                 SizedBox(height: 20.h),
-                _buildTrackVideo(),
+                _buildTrackVideo(widget.rideDetails['address'] ?? ''),
                 SizedBox(height: 20.h),
                 _buildCurrentLocation(),
                 SizedBox(height: 20.h),
@@ -184,122 +201,107 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
     });
   }
 
-  // Updated method to display the real current location
   Widget _buildCurrentLocation() {
     return BlueCardWidget(
       title: 'Current Location',
       child: Padding(
-        padding:
-            const EdgeInsets.symmetric(vertical: 8.0), // Consistent padding
-        child: Text(
-          _currentLocation, // Display the fetched location
-          style: TextStyle(
-            color: Colors.white,
-            fontFamily: 'Arial',
-            fontSize: 16.sp, // Consistent font size
-          ),
-        ),
+        padding: EdgeInsets.all(12.w),
+        child: _isLocationLoading
+            ? _buildLoadingIndicator()
+            : _buildLocationText(),
       ),
     );
   }
-}
 
-// Accept rideDetails as a parameter
-Widget _buildTrackDetails(Map<String, dynamic> rideDetails) {
-  return BlueCardWidget(
-    title: 'Ride Details',
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildLoadingIndicator() {
+    return Row(
       children: [
-        _buildDetailRow('Ride Id', '${rideDetails['id']}'),
-        _buildDetailRow('Date & Time', '2025-02-10 12:00 PM'),
-        Divider(),
-        _buildDetailRow('Driver Id', '${rideDetails['driver_id']}'),
-        _buildDetailRow('Driver Name', '${rideDetails['driver_name']}'),
-        Divider(),
-        _buildDetailRow('Vehicle Id', '${rideDetails['vehicle_number']}'),
-        _buildDetailRow('Vehicle Name', '${rideDetails['vehicle_name']}'),
-        Divider(),
-        _buildDetailRow('Task', '${rideDetails['task']}'),
-        _buildDetailRow('Address', '${rideDetails['address']}'),
-      ],
-    ),
-  );
-}
-
-Widget _buildTrackVideo() {
-  return BlueCardWidget(
-    title: 'Track Ride',
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 10),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.asset(
-              'assets/images/gps-satellite-navigation-system-screen_184220-480.png'), // Replace with actual video thumbnail
-        ),
-      ],
-    ),
-  );
-}
-
-Widget _buildCurrentLocation() {
-  return BlueCardWidget(
-    title: 'Current Location',
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0), // Consistent padding
-      child: Text(
-        'City: Example City, Street: Example Street',
-        style: TextStyle(
-          color: Colors.white,
-          fontFamily: 'Arial',
-          fontSize: 16.sp, // Consistent font size
-        ),
-      ),
-    ),
-  );
-}
-
-Widget _buildViewReport() {
-  return BlueCardWidget(
-    title: 'View Report',
-    child: GestureDetector(
-      onTap: () {
-        // Handle "View Report" action
-      },
-      child: Text(
-        'View Report',
-        style: TextStyle(color: Colors.blue, fontFamily: 'Arial'),
-      ),
-    ),
-  );
-}
-
-// Helper method to format the date
-String _formatDate(String dateString) {
-  try {
-    DateTime dateTime = DateTime.parse(dateString);
-    return DateFormat('yyyy-MM-dd').format(dateTime);
-  } catch (e) {
-    return dateString; // Return the original string if parsing fails
-  }
-}
-
-Widget _buildDetailRow(String label, String value) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      Text(
-        label,
-        style: TextStyle(
-            fontWeight: FontWeight.bold,
+        SizedBox(
+          width: 20.w,
+          height: 20.w,
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
             color: Colors.white,
-            fontFamily: 'Arial'),
+          ),
+        ),
+        SizedBox(width: 12.w),
+        Text(
+          'Detecting your location...',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14.sp,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildLocationText() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(Icons.location_pin, color: Colors.white, size: 18.sp),
+        SizedBox(width: 8.w),
+        Expanded(
+          child: Text(
+            _currentLocation ?? 'Location unavailable',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 14.sp,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildTrackDetails(Map<String, dynamic> rideDetails) {
+    return BlueCardWidget(
+      title: 'Ride Details',
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildDetailRow('Ride Id', '${rideDetails['id']}'),
+          _buildDetailRow('Date & Time', '2025-02-10 12:00 PM'),
+          Divider(),
+          _buildDetailRow('Driver Id', '${rideDetails['driver_id']}'),
+          _buildDetailRow('Driver Name', '${rideDetails['driver_name']}'),
+          Divider(),
+          _buildDetailRow('Vehicle Id', '${rideDetails['vehicle_number']}'),
+          _buildDetailRow('Vehicle Name', '${rideDetails['vehicle_name']}'),
+          Divider(),
+          _buildDetailRow('Task', '${rideDetails['task']}'),
+          _buildDetailRow('Address', '${rideDetails['address']}'),
+        ],
       ),
-      Text(value, style: TextStyle(color: Colors.white, fontFamily: 'Arial')),
-    ],
-  );
+    );
+  }
+
+  Widget _buildTrackVideo(String destinationAddress) {
+    return BlueCardWidget(
+      title: 'Track Ride',
+      child: TrackMapWidget(
+        destinationAddress: destinationAddress,
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontFamily: 'Arial'),
+        ),
+        Text(value, style: TextStyle(color: Colors.white, fontFamily: 'Arial')),
+      ],
+    );
+  }
 }
 
 class BlueCardWidget extends StatelessWidget {
@@ -317,7 +319,7 @@ class BlueCardWidget extends StatelessWidget {
       ),
       elevation: 5,
       child: Padding(
-        padding: const EdgeInsets.all(16.0), // Ensure consistent padding
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

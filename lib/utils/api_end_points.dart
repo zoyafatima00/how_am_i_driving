@@ -2,7 +2,7 @@
 
 class ApiEndPoints {
   ApiEndPoints._();
-  static const String BASE_URL = 'http://192.168.10.8:8000/';
+  static const String BASE_URL = 'http://192.168.18.130:8000/';
   static String SIGNUP_URI = 'signup';
   static String LOGIN_URI = 'login';
 

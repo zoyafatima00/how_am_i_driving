@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.0.w),
           child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+            physics: BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -110,6 +110,7 @@ class HomeScreen extends StatelessWidget {
                       vm.onAddScheduleClicked(context);
                     },
                   ),
+                  SizedBox(height: 8.h),
                 ],
               ),
             ),

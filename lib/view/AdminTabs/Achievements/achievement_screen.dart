@@ -37,6 +37,7 @@ class AchievementScreen extends StatelessWidget {
 
                 // Safe Driving Streaks Section
                 AchievementCard(
+                  iconPath: 'assets/images/chess.png',
                   title: "Safe Driving Streaks",
                   subtitle: "Days without any violations.",
                   badgeText: '7 days: "Cautious Cruiser" Badge',
@@ -49,6 +50,7 @@ class AchievementScreen extends StatelessWidget {
 
                 // Achievement Badges Section
                 AchievementCard(
+                  iconPath: 'assets/images/shield-halved-solid.png',
                   title: "Achievement Badges",
                   subtitle: "For completing 50 days without lane violation",
                   badgeText: '"Lane Champ" Badge',

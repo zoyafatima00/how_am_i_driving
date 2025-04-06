@@ -17,7 +17,7 @@ class AdminHomeScreen extends StatelessWidget {
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.0.w),
           child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
+            physics: AlwaysScrollableScrollPhysics(),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -78,11 +78,12 @@ class AdminHomeScreen extends StatelessWidget {
                       AdminActionCard(
                         title: "Live Streaming",
                         iconPath: 'assets/images/live_streaming_icon.png',
-                        cardColor: AppColors.HISTORY_CARD_COLOR,
+                        cardColor: AppColors.Text_COLOR,
                         onTap: () {
                           vm.onLiveStreamingClicked(context);
                         },
                       ),
+                      SizedBox(height: 20.h),
                     ],
                   ),
                 ],

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:how_am_i_driving/utils/color_resources.dart';
 
 class AchievementCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String badgeText;
   final String badgeImage;
+  final String iconPath; // Path to the image asset
   final VoidCallback onTap;
 
   const AchievementCard({
@@ -13,6 +15,7 @@ class AchievementCard extends StatelessWidget {
     required this.subtitle,
     required this.badgeText,
     required this.badgeImage,
+    required this.iconPath, // New field for icon image
     required this.onTap,
   }) : super(key: key);
 
@@ -38,13 +41,26 @@ class AchievementCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent,
-              ),
+            Row(
+              // Icon and title in the same row
+              children: [
+                Image.asset(
+                  iconPath,
+                  width: 27, // Adjust size as needed
+                  height: 25,
+                ),
+                SizedBox(width: 7), // Spacing between icon and title
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.Text_COLOR,
+                    ),
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 10),
             Text(
@@ -64,21 +80,13 @@ class AchievementCard extends StatelessWidget {
                   child: Text(
                     badgeText,
                     style: TextStyle(
+                      color: AppColors.TextMUSTARD_COLOR,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ],
-            ),
-            SizedBox(height: 5),
-            Text(
-              "Show all",
-              style: TextStyle(
-                fontSize: 14,
-                color: Colors.blueAccent,
-                fontWeight: FontWeight.w500,
-              ),
             ),
           ],
         ),
