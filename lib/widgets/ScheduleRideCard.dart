@@ -66,7 +66,7 @@ class ScheduleRideCard extends StatelessWidget {
                   Text(
                     dropOffLocation, // Using the dynamic drop-off location passed
                     style: TextStyle(
-                        fontSize: 13.sp,
+                        fontSize: 11.sp,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Arial',
                         color: AppColors.Text_COLOR),

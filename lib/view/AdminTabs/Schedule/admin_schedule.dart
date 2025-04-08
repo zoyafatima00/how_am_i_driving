@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/color_resources.dart';
-import '../../../widgets/trackRideCared_widget.dart';
+import '../../../widgets/ScheduleRideCard.dart';
 import 'admin_schedule_vm.dart';
 
 class AdminScheduleScreen extends StatelessWidget {
@@ -13,44 +13,53 @@ class AdminScheduleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AdminScheduleVm>(builder: (context, vm, _) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20.0.w),
-          child: SingleChildScrollView(
-            physics: const NeverScrollableScrollPhysics(),
-            child: Column(
-              children: [
-                SizedBox(height: 16.h),
-                // Title
-                Text(
-                  "Rides' Scheduled",
-                  style: TextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'Arial',
-                      color: AppColors.Text_COLOR),
-                ),
-                SizedBox(height: 35.h),
+    return ChangeNotifierProvider(
+      create: (context) => AdminScheduleVm()..fetchRideListByName(),
+      child: Consumer<AdminScheduleVm>(builder: (context, vm, _) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0.w),
+            child: SingleChildScrollView(
+              physics: const NeverScrollableScrollPhysics(),
+              child: Column(
+                children: [
+                  SizedBox(height: 16.h),
+                  // Title
+                  Text(
+                    "Rides' Scheduled",
+                    style: TextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Arial',
+                        color: AppColors.Text_COLOR),
+                  ),
+                  SizedBox(height: 35.h),
 
-                // Violation Records List
-                Column(
-                  children: [
-                    TrackRideCard(
-                      onTap: () {},
-                      onDetailsTap: () {},
-                      driverName: "dummy", // Custom driver's name
-                      vehicleName: "dummy", // Custom vehicle's name
-                      dropoffLocation: "dummy", // Custom dropoff location
-                    )
-                  ],
-                ),
-              ],
+                  // Rides List
+                  vm.isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : Column(
+                          children: vm.rideList.map((ride) {
+                            return ScheduleRideCard(
+                              driverName:
+                                  ride['driver_name'] ?? 'Driver\'s Name',
+                              vehicleName:
+                                  ride['vehicle_name'] ?? 'Vehicle\'s Name',
+                              dropOffLocation:
+                                  ride['address'] ?? 'Drop Off Location',
+                              onTap: () {
+                                vm.onViewScheduleProfileClicked(context, ride);
+                              },
+                            );
+                          }).toList(),
+                        ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
   }
 }

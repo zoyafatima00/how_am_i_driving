@@ -155,12 +155,14 @@ class _ViewDriverProfileScreenState extends State<ViewDriverProfileScreen> {
                             fontFamily: 'Arial',
                             color: AppColors.TextFIELD_EYE_COLOR,
                           )),
-                      Text('Address: ${vm.address ?? 'Loading...'}',
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontFamily: 'Arial',
-                            color: AppColors.TextFIELD_EYE_COLOR,
-                          )),
+                      Text(
+                        'Address:\n${(vm.address ?? 'Loading...').replaceFirst(',', '\n')}',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontFamily: 'Arial',
+                          color: AppColors.TextFIELD_EYE_COLOR,
+                        ),
+                      ),
                     ],
                   ),
                 ],

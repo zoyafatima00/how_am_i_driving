@@ -12,6 +12,7 @@ import '../AdminTabs/Schedule/admin_schedule.dart';
 import '../AdminTabs/Schedule/admin_schedule_vm.dart';
 import '../AdminTabs/Violations/admin_viloation_screen.dart';
 import '../AdminTabs/Violations/admin_violation_vm.dart';
+import '../start/login_splash.dart';
 
 class AdminBottomNavVm extends BaseVm {
   late final BuildContext context;
@@ -78,5 +79,9 @@ class AdminBottomNavVm extends BaseVm {
 
   onNotifcationClicked(BuildContext context) {
     Navigator.pushNamed(context, NotificationScreen.route);
+  }
+
+  onLogOutClicked(BuildContext context) {
+    Navigator.pushNamed(context, LoginOptionScreen.route);
   }
 }

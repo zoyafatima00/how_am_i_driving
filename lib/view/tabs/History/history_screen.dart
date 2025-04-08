@@ -110,22 +110,34 @@ class HistoryScreen extends StatelessWidget {
                       onTap: () {
                         vm.onHistoryProfileClicked(context);
                       },
+                      violationType: "Over Speeding",
+                      driverName: "Rashid Khan",
+                      vehicleName: "Suzuki Bolan",
                     ),
                     ViolationCard(
                       onTap: () {
                         vm.onHistoryProfileClicked(context);
                       },
+                      violationType: "Traffic Violation",
+                      driverName: "Fahad",
+                      vehicleName: "Cultus",
                     ),
                     ViolationCard(
                       onTap: () {
                         vm.onHistoryProfileClicked(context);
                       },
+                      violationType: "Zebra Crossing Violation",
+                      driverName: "Jhon Doe",
+                      vehicleName: "Mehran",
                     ),
-                    ViolationCard(
-                      onTap: () {
-                        vm.onHistoryProfileClicked(context);
-                      },
-                    ),
+                    // ViolationCard(
+                    //   onTap: () {
+                    //     vm.onHistoryProfileClicked(context);
+                    //   },
+                    //   violationType: "Speeding",
+                    //   driverName: "cvb",
+                    //   vehicleName: "Nissan Altima",
+                    // ),
                   ],
                 ),
               ],

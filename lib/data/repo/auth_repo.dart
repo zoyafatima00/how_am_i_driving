@@ -205,6 +205,18 @@ class AuthRepo {
     }
   }
 
+  Future<ApiResponse> getRideListByName(String driver_name) async {
+    try {
+      final response = await dioClient.get(
+        ApiEndPoints.RIDE_LIST_URI_BYNAME,
+        queryParameters: {'driver_name': driver_name}, // Add this
+      );
+      return ApiResponse.withSuccess(response);
+    } catch (e) {
+      return ApiResponse.withError(ApiErrorHandler.getMessage(e));
+    }
+  }
+
   Future<ApiResponse> getRideDetails(
       {String? vehicleName, String? driverName, String? address}) async {
     try {
@@ -223,10 +235,10 @@ class AuthRepo {
   }
 
   //login
-  Future<ApiResponse> loginUser(String email, String password) async {
+  Future<ApiResponse> loginDriver(String full_name, String password) async {
     try {
-      final response = await dioClient.post(ApiEndPoints.LOGIN_URI,
-          data: {"email": email, "password": password});
+      final response = await dioClient.post(ApiEndPoints.DRIVER_LOGIN_URI,
+          data: {"full_name": full_name, "password": password});
       return ApiResponse.withSuccess(response);
     } catch (e) {
       return ApiResponse.withError(ApiErrorHandler.getMessage(e));

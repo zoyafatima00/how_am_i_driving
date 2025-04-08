@@ -22,11 +22,51 @@ class _TrackMapWidgetState extends State<TrackMapWidget> {
   LatLng? _destinationLatLng;
   final Set<Marker> _markers = {};
   bool _isLoading = true;
+  double? _currentSpeed; // in m/s
+  StreamSubscription<Position>? _positionStream;
+  bool _isSpeedInKmph = true; // toggle between km/h and m/s
 
   @override
   void initState() {
     super.initState();
     _initializeLocations();
+    _startListeningToPositionUpdates();
+  }
+
+  @override
+  void dispose() {
+    _positionStream?.cancel();
+    super.dispose();
+  }
+
+  void _startListeningToPositionUpdates() {
+    const LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.bestForNavigation,
+      distanceFilter: 5, // Update every 5 meters
+    );
+    _positionStream = Geolocator.getPositionStream(
+      locationSettings: locationSettings,
+    ).listen((Position position) {
+      if (mounted) {
+        setState(() {
+          _currentSpeed = position.speed; // Speed in m/s
+          _currentLatLng = LatLng(position.latitude, position.longitude);
+          _updateMarkers();
+        });
+      }
+    });
+  }
+
+  String _getFormattedSpeed() {
+    if (_currentSpeed == null || _currentSpeed! < 0) {
+      return '0.0 ${_isSpeedInKmph ? 'km/h' : 'm/s'}';
+    }
+
+    final speed = _isSpeedInKmph
+        ? (_currentSpeed! * 3.6) // Convert m/s to km/h
+        : _currentSpeed!;
+
+    return '${speed.toStringAsFixed(1)} ${_isSpeedInKmph ? 'km/h' : 'm/s'}';
   }
 
   Future<void> _initializeLocations() async {
@@ -42,7 +82,6 @@ class _TrackMapWidgetState extends State<TrackMapWidget> {
         print('Location services are disabled');
         return;
       }
-
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.deniedForever) {
         print('Location permissions permanently denied');
@@ -57,7 +96,6 @@ class _TrackMapWidgetState extends State<TrackMapWidget> {
           return;
         }
       }
-
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
 
@@ -189,36 +227,88 @@ class _TrackMapWidgetState extends State<TrackMapWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _launchMapDirections,
-      child: Container(
-        height: 200,
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: _isLoading || _currentLatLng == null
-            ? const Center(child: CircularProgressIndicator())
-            : GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: _currentLatLng!,
-                  zoom: 14,
-                ),
-                onMapCreated: (controller) {
-                  _mapController = controller;
-                  if (_currentLatLng != null && _destinationLatLng != null) {
-                    _updateCamera();
-                  }
-                },
-                markers: _markers,
-                myLocationEnabled: true,
-                myLocationButtonEnabled: true,
-                zoomControlsEnabled: false,
-                onCameraMoveStarted: () {},
-                onCameraMove: (_) {},
-                onCameraIdle: () {},
-              ),
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey),
+        borderRadius: BorderRadius.circular(8),
       ),
+      child: _isLoading || _currentLatLng == null
+          ? const Center(child: CircularProgressIndicator())
+          : Stack(
+              children: [
+                GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: _currentLatLng!,
+                    zoom: 14,
+                  ),
+                  onMapCreated: (controller) {
+                    _mapController = controller;
+                    if (_currentLatLng != null && _destinationLatLng != null) {
+                      _updateCamera();
+                    }
+                  },
+                  markers: _markers,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                  zoomControlsEnabled: false,
+                  onTap: (LatLng position) {
+                    _launchMapDirections();
+                  },
+                ),
+                Positioned.fill(
+                  child: GestureDetector(
+                    onTap: _launchMapDirections,
+                    behavior: HitTestBehavior.translucent,
+                  ),
+                ),
+                // Speed display widget
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: GestureDetector(
+                    onTap: () =>
+                        setState(() => _isSpeedInKmph = !_isSpeedInKmph),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            blurRadius: 4,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.speed,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            _getFormattedSpeed(),
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

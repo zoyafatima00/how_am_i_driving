@@ -29,7 +29,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen> {
   void _initStream() {
     // 1. Initialize VLC player
     _vlcController = VlcPlayerController.network(
-      "rtmp://192.168.18.30/live/gopro",
+      "rtmp://192.168.18.130/live/gopro",
       autoPlay: true,
       options: VlcPlayerOptions(),
     );
@@ -41,7 +41,7 @@ class _LiveStreamingScreenState extends State<LiveStreamingScreen> {
 
   void _connectWebSocket() {
     _channel = WebSocketChannel.connect(
-      Uri.parse('ws://192.168.18.30:8000/ws/video-feed'),
+      Uri.parse('ws://192.168.18.130:8000/ws/video-feed'),
     );
     _channel.stream.listen(
       (data) {

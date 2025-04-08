@@ -5,4 +5,5 @@ class SharedPrefsKeys {
   static const String OTPEMAIL = 'email';
   static const String USERNAME = 'NAME';
   static const String USERPROFILE = 'IMAGE';
+  static const String FULL_NAME = 'IMAGE';
 }

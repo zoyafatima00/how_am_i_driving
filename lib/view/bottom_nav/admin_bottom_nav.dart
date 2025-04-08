@@ -6,12 +6,18 @@ import 'package:provider/provider.dart';
 
 import '../../utils/app_constants.dart';
 import '../../widgets/admin_drawer_widget.dart';
+import '../../widgets/logOutMenu.dart';
 import 'admin_bottom_nav_vm.dart';
 
-class AdminBottomNavScreen extends StatelessWidget {
+class AdminBottomNavScreen extends StatefulWidget {
   static const String route = '/AdminBottomNavScreen';
   const AdminBottomNavScreen({super.key});
 
+  @override
+  State<AdminBottomNavScreen> createState() => _AdminBottomNavScreenState();
+}
+
+class _AdminBottomNavScreenState extends State<AdminBottomNavScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminBottomNavVm>(builder: (context, vm, _) {
@@ -72,12 +78,10 @@ class AdminBottomNavScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 10.w),
-                  InkWell(
-                    onTap: () {
-                      // Handle profile tap
-                    },
+                  LogoutMenu(
+                    onLogout: () => vm.onLogOutClicked(context),
                     child: Image.asset(
-                      'assets/images/person_icon.png', // PNG icon for person/profile
+                      'assets/images/person_icon.png',
                       height: 21.h,
                       width: 23.h,
                     ),

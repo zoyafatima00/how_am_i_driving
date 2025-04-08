@@ -67,7 +67,7 @@ class TrackRideCard extends StatelessWidget {
                   Text(
                     dropoffLocation,
                     style: TextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 10.sp,
                         fontWeight: FontWeight.w400,
                         fontFamily: 'Arial',
                         color: AppColors.Text_COLOR),
@@ -87,7 +87,7 @@ class TrackRideCard extends StatelessWidget {
                 child: Text(
                   "View Details",
                   style: TextStyle(
-                      fontSize: 14.sp,
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
                       color: Colors.white),
                 ),

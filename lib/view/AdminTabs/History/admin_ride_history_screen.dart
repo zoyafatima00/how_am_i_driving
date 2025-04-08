@@ -167,9 +167,15 @@ class AdminRideHistoryScreen extends StatelessWidget {
                   children: [
                     ViolationCard(
                       onTap: () {},
+                      violationType: "Speeding",
+                      driverName: "cvb",
+                      vehicleName: "Nissan Altima",
                     ),
                     ViolationCard(
                       onTap: () {},
+                      violationType: "Speeding",
+                      driverName: "cvb",
+                      vehicleName: "Nissan Altima",
                     ),
                   ],
                 ),

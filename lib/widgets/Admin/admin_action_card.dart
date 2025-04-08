@@ -24,7 +24,6 @@ class AdminActionCard extends StatelessWidget {
       child: Container(
         width: AppConstants.getScreenWidth(context) * 0.9,
         height: 110.h,
-        //margin: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
           color: cardColor,
           borderRadius: BorderRadius.circular(10),
@@ -37,25 +36,39 @@ class AdminActionCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
           children: [
-            Image.asset(
-              iconPath,
-              width: 38.w,
-              height: 38.h,
-            ),
-            const SizedBox(width: 20),
+            // Centered content (icon + text)
             Center(
-              child: Expanded(
-                child: Text(
-                  title,
-                  style: const TextStyle(
+              child: Row(
+                mainAxisSize: MainAxisSize.min, // Take only needed space
+                children: [
+                  Image.asset(
+                    iconPath,
+                    width: 40.w,
+                    height: 40.h,
+                    fit: BoxFit.contain,
+                  ),
+                  SizedBox(width: 15.w),
+                  Text(
+                    title,
+                    style: const TextStyle(
                       fontSize: 21,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontFamily: 'Arial'),
-                ),
+                      fontFamily: 'Arial',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Invisible placeholder to ensure consistent left padding
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Container(
+                width: 40.w + 15.w, // Icon width + spacing
+                height: 40.h, // Same as icon height
+                color: Colors.transparent,
               ),
             ),
           ],

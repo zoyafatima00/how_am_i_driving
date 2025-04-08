@@ -83,7 +83,7 @@ class LoginVm extends BaseVm {
     _isLoading = true;
     notifyListeners();
 
-    final response = await authRepo.loginUser(email, password);
+    final response = await authRepo.loginDriver(email, password);
     if (response.response != null &&
         (response.response?.statusCode == 200 ||
             response.response?.statusCode == 201)) {

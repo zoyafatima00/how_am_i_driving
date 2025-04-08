@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/color_resources.dart';
-import '../../../widgets/custom_button.dart';
 import 'notificationProfile_vm.dart';
 
 class NotificationProfileScreen extends StatelessWidget {
@@ -90,16 +89,16 @@ class NotificationProfileScreen extends StatelessWidget {
                 SizedBox(height: 20.h),
                 _buildViolationDetails(),
                 SizedBox(height: 20.h),
-                _buildViolationVideo(),
+                // _buildViolationVideo(),
                 SizedBox(height: 20.h),
-                _buildCurrentLocation(),
+                //_buildCurrentLocation(),
                 SizedBox(height: 20.h),
-                CustomButton(
-                    isEnabled: true,
-                    buttonText: 'View Report',
-                    onPressed: () {
-                      // Navigator.pop();
-                    }),
+                // CustomButton(
+                //     isEnabled: true,
+                //     buttonText: 'View Report',
+                //     onPressed: () {
+                //       // Navigator.pop();
+                //     }),
                 SizedBox(height: 20.h),
               ],
             ),
@@ -115,18 +114,18 @@ class NotificationProfileScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildDetailRow('Violation ID', '123456789'),
-          _buildDetailRow('Violation Type', 'Speeding'),
-          _buildDetailRow('Date & Time', '2025-02-10 12:00 PM'),
+          _buildDetailRow('Violation ID', '01'),
+          _buildDetailRow('Violation Type', 'Over Speeding'),
+          _buildDetailRow('Date & Time', '2025-04-07 12:00 PM'),
           Divider(),
-          _buildDetailRow('Driver Id', 'driver12345'),
-          _buildDetailRow('Driver Name', 'John Doe'),
+          _buildDetailRow('Driver Id', '03'),
+          _buildDetailRow('Driver Name', 'Rashid Khan'),
           Divider(),
-          _buildDetailRow('Vehicle Id', 'vehicle12345'),
-          _buildDetailRow('Vehicle Name', 'Honda Civic'),
+          _buildDetailRow('Vehicle Id', 'RIL-8472'),
+          _buildDetailRow('Vehicle Name', 'Suzuki Bolan'),
           Divider(),
-          _buildDetailRow('Task', 'Over Speeding'),
-          _buildDetailRow('Task Details', 'Speed exceeded 20 km/h over limit'),
+          //_buildDetailRow('Task', 'Over Speeding'),
+          _buildDetailRow('Details', 'Speed exceeded 100 km/h over limit'),
         ],
       ),
     );

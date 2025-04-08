@@ -4,6 +4,7 @@ import 'package:how_am_i_driving/view/tabs/Notification/notification_screen.dart
 import 'package:provider/provider.dart';
 
 import '../../data/base_vm.dart';
+import '../start/login_splash.dart';
 import '../tabs/History/history_screen.dart';
 import '../tabs/History/history_vm.dart';
 import '../tabs/Home/home_screen.dart';
@@ -86,4 +87,8 @@ class BottomNavVm extends BaseVm {
     'More Tools For Change',
     'About Dawn Grant',
   ];
+
+  onLogOutClicked(BuildContext context) {
+    Navigator.pushNamed(context, LoginOptionScreen.route);
+  }
 }

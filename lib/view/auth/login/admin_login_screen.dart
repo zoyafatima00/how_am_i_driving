@@ -62,8 +62,8 @@ class AdminLoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
                   CustomTextField(
-                    hintText: 'UserName',
-                    controllerValue: vm.emailController,
+                    hintText: 'Name',
+                    controllerValue: vm.nameController,
                   ),
                   const SizedBox(height: 10),
                   CustomTextField(

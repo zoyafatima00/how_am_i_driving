@@ -410,6 +410,7 @@ class AddVehicleScreen extends StatelessWidget {
                     vm.onAddVehicleClicked(context);
                   },
                 ),
+                SizedBox(height: 54.h),
               ],
             ),
           ),

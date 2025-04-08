@@ -53,16 +53,16 @@ class _MyDrawerState extends State<MyAdminDrawer> {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              color: Colors.white60,
             ),
             child: Column(
               children: [
                 // Removed the CircleAvatar for profile picture
-                SizedBox(height: 10),
-                Text(
-                  'Admin Name', // Replace with dynamic admin name if available
-                  style: TextStyle(color: Colors.white, fontSize: 18.sp),
-                ),
+                SizedBox(height: 5),
+                // Text(
+                //   'Admin Name', // Replace with dynamic admin name if available
+                //   style: TextStyle(color: Colors.white, fontSize: 18.sp),
+                // ),
               ],
             ),
           ),

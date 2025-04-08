@@ -5,9 +5,18 @@ import '../utils/color_resources.dart';
 
 class ViolationCard extends StatelessWidget {
   final VoidCallback onTap; // Custom function to handle tap event
+  final String violationType; // Violation type
+  final String driverName; // Driver's name
+  final String vehicleName; // Vehicle's name
 
-  // Constructor now takes a parameter for onTap function
-  const ViolationCard({super.key, required this.onTap});
+  // Constructor now takes parameters for dynamic data
+  const ViolationCard({
+    super.key,
+    required this.onTap,
+    required this.violationType,
+    required this.driverName,
+    required this.vehicleName,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +47,7 @@ class ViolationCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Type of Violation", // Replace with dynamic data
+                    violationType, // Use the dynamic violation type
                     style: TextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
@@ -47,7 +56,7 @@ class ViolationCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    "Driver's Name", // Replace with dynamic data
+                    driverName, // Use the dynamic driver's name
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
@@ -56,7 +65,7 @@ class ViolationCard extends StatelessWidget {
                   ),
                   SizedBox(height: 4.h),
                   Text(
-                    "Vehicle's Name", // Replace with dynamic data
+                    vehicleName, // Use the dynamic vehicle's name
                     style: TextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:how_am_i_driving/view/tabs/History/violationHistory_vm.dart';
-import 'package:how_am_i_driving/widgets/custom_button.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utils/color_resources.dart';
@@ -92,16 +91,17 @@ class ViewHistoryProfileScreen extends StatelessWidget {
                 SizedBox(height: 20.h),
                 _buildViolationDetails(),
                 SizedBox(height: 20.h),
-                _buildViolationVideo(),
+                // _buildViolationVideo(),
                 SizedBox(height: 20.h),
-                _buildCurrentLocation(),
+
+                ///_buildCurrentLocation(),
                 SizedBox(height: 20.h),
-                CustomButton(
-                    isEnabled: true,
-                    buttonText: 'View Report',
-                    onPressed: () {
-                      // Navigator.pop();
-                    }),
+                // CustomButton(
+                //     isEnabled: true,
+                //     buttonText: 'View Report',
+                //     onPressed: () {
+                //       // Navigator.pop();
+                //     }),
                 SizedBox(height: 20.h),
               ],
             ),

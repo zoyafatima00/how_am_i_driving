@@ -85,7 +85,7 @@ class ViewScheduleScreen extends StatelessWidget {
           body: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0.w),
             child: SingleChildScrollView(
-              physics: const NeverScrollableScrollPhysics(),
+              physics: BouncingScrollPhysics(),
               child: Column(
                 children: [
                   SizedBox(height: 14.h),

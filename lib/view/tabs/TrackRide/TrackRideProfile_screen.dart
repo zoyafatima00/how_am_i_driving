@@ -11,9 +11,7 @@ import 'TrackRideProfile_vm.dart';
 class TrackRideProfileScreen extends StatefulWidget {
   static const route = '/TrackRideProfileScreen';
   final Map<String, dynamic> rideDetails;
-
   const TrackRideProfileScreen({super.key, required this.rideDetails});
-
   @override
   _TrackRideProfileScreenState createState() => _TrackRideProfileScreenState();
 }
@@ -21,7 +19,6 @@ class TrackRideProfileScreen extends StatefulWidget {
 class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
   String? _currentLocation;
   bool _isLocationLoading = true;
-
   @override
   void initState() {
     super.initState();
@@ -38,9 +35,7 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
           _isLocationLoading = false;
         });
         return;
-      }
-
-      // Check location permissions
+      } // Check location permissions
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
@@ -52,35 +47,28 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
           return;
         }
       }
-
       if (permission == LocationPermission.deniedForever) {
         setState(() {
           _currentLocation = 'Location permissions are permanently denied';
           _isLocationLoading = false;
         });
         return;
-      }
-
-      // Fetch position
+      } // Fetch position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.best,
       );
-
       // Get placemarks
       List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
       );
-
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
         final address = _formatPlacemark(place); // New formatting method
-
         setState(() {
           _currentLocation = address.isNotEmpty
               ? address
-              : 'Rawalpindi, Punjab, Pakistan'; // Fallback
-          _isLocationLoading = false;
+              : 'Rawalpindi, Punjab, Pakistan'; // Fallback_isLocationLoading = false;
         });
       } else {
         setState(() {
@@ -106,7 +94,6 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
         place.administrativeArea,
       if (place.country?.isNotEmpty ?? false) place.country,
     ].whereType<String>().toList();
-
     return addressParts.join(', ');
   }
 
@@ -219,7 +206,7 @@ class _TrackRideProfileScreenState extends State<TrackRideProfileScreen> {
         SizedBox(
           width: 20.w,
           height: 20.w,
-          child: CircularProgressIndicator(
+          child: const CircularProgressIndicator(
             strokeWidth: 2,
             color: Colors.white,
           ),

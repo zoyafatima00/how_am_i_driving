@@ -4,11 +4,13 @@ import 'package:how_am_i_driving/utils/color_resources.dart';
 import 'package:provider/provider.dart';
 
 import '../../../widgets/Admin/admin_action_card.dart';
+import '../../bottom_nav/admin_bottom_nav_vm.dart';
 import 'admin_home_vm.dart'; // Import the StatusCard widget
 
 class AdminHomeScreen extends StatelessWidget {
   static const route = '/AdminHomeScreen';
   const AdminHomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Consumer<AdminHomeScreenVm>(builder: (context, vm, _) {
@@ -48,14 +50,20 @@ class AdminHomeScreen extends StatelessWidget {
                         title: "Rides' Schedule",
                         iconPath: 'assets/images/calendar-days-solid.png',
                         cardColor: AppColors.Text_COLOR,
-                        onTap: () {},
+                        onTap: () {
+                          // Update the selected index to the Schedule tab (1)
+                          Provider.of<AdminBottomNavVm>(context, listen: false)
+                              .selectedIndex = 1;
+                        },
                       ),
                       SizedBox(height: 20.h),
                       AdminActionCard(
-                        title: "Achievements",
-                        iconPath: 'assets/images/medal-solid.png',
-                        cardColor: AppColors.TextMUSTARD_COLOR,
-                        onTap: () {},
+                        title: "Live Streaming",
+                        iconPath: 'assets/images/live_streaming_icon.png',
+                        cardColor: AppColors.HISTORY_CARD_COLOR,
+                        onTap: () {
+                          vm.onLiveStreamingClicked(context);
+                        },
                       ),
                       SizedBox(height: 20.h),
                       AdminActionCard(
@@ -63,27 +71,23 @@ class AdminHomeScreen extends StatelessWidget {
                         iconPath:
                             'assets/images/triangle-exclamation-solid.png',
                         cardColor: AppColors.TextFIELD_COLOR,
-                        onTap: () {},
-                      ),
-                      SizedBox(height: 20.h),
-                      AdminActionCard(
-                        title: "Rides' History",
-                        iconPath: 'assets/images/car-solid (1).png',
-                        cardColor: AppColors.HISTORY_CARD_COLOR,
                         onTap: () {
-                          vm.onRideHistoryClicked(context);
+                          // Update the selected index to the Violations tab (2)
+                          Provider.of<AdminBottomNavVm>(context, listen: false)
+                              .selectedIndex = 2;
                         },
                       ),
                       SizedBox(height: 20.h),
                       AdminActionCard(
-                        title: "Live Streaming",
-                        iconPath: 'assets/images/live_streaming_icon.png',
-                        cardColor: AppColors.Text_COLOR,
+                        title: "Achievements",
+                        iconPath: 'assets/images/medal-solid.png',
+                        cardColor: AppColors.TextMUSTARD_COLOR,
                         onTap: () {
-                          vm.onLiveStreamingClicked(context);
+                          // Update the selected index to the Achievements tab (3)
+                          Provider.of<AdminBottomNavVm>(context, listen: false)
+                              .selectedIndex = 3;
                         },
                       ),
-                      SizedBox(height: 20.h),
                     ],
                   ),
                 ],

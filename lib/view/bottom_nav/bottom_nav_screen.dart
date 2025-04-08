@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../utils/app_constants.dart';
 import '../../widgets/drawer_widget.dart';
+import '../../widgets/logOutMenu.dart';
 import 'bottom_vm.dart';
 
 class BottomNavScreen extends StatelessWidget {
@@ -72,12 +73,10 @@ class BottomNavScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(width: 10.w),
-                  InkWell(
-                    onTap: () {
-                      // Handle profile tap
-                    },
+                  LogoutMenu(
+                    onLogout: () => vm.onLogOutClicked(context),
                     child: Image.asset(
-                      'assets/images/person_icon.png', // PNG icon for person/profile
+                      'assets/images/person_icon.png',
                       height: 21.h,
                       width: 23.h,
                     ),

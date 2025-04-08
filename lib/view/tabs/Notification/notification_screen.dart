@@ -99,7 +99,7 @@ class NotificationScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "DD/MM/YY",
+                      "07/04/2025",
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
@@ -107,7 +107,7 @@ class NotificationScreen extends StatelessWidget {
                           color: Colors.black),
                     ),
                     Text(
-                      "Time",
+                      "12:00 AM",
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
@@ -125,21 +125,33 @@ class NotificationScreen extends StatelessWidget {
                       onTap: () {
                         vm.onNotificationCardClicked(context);
                       },
+                      violationType: "Over Speeding",
+                      driverName: "Rashid Khan",
+                      vehicleName: "Suzuki Bolan",
                     ),
                     ViolationCard(
                       onTap: () {
                         vm.onNotificationCardClicked(context);
                       },
+                      violationType: "Traffic Light Violation",
+                      driverName: "Rashid Khan",
+                      vehicleName: "Suzuki Bolan",
                     ),
                     ViolationCard(
                       onTap: () {
                         vm.onNotificationCardClicked(context);
                       },
+                      violationType: "Zebra Crossing Violation",
+                      driverName: "Rashid Khan",
+                      vehicleName: "Suzuki Bolan",
                     ),
                     ViolationCard(
                       onTap: () {
                         vm.onNotificationCardClicked(context);
                       },
+                      violationType: "Lane Violation",
+                      driverName: "Rashid Khan",
+                      vehicleName: "Suzuki Bolan",
                     ),
                   ],
                 ),

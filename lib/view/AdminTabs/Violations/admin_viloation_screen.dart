@@ -84,7 +84,7 @@ class AdminViolationScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "DD/MM/YY",
+                      "04/07/2025",
                       style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
@@ -110,17 +110,26 @@ class AdminViolationScreen extends StatelessWidget {
                       onTap: () {
                         vm.onHistoryProfileClicked(context);
                       },
+                      violationType: "Over Speeding",
+                      driverName: "Rashid Khan",
+                      vehicleName: "Suzuki Bolan",
                     ),
                     ViolationCard(
                       onTap: () {
                         vm.onHistoryProfileClicked(context);
                       },
+                      violationType: "Traffic Light Violation",
+                      driverName: "Rashid Khan",
+                      vehicleName: "Suzuki Bolan",
                     ),
-                    ViolationCard(
-                      onTap: () {
-                        vm.onHistoryProfileClicked(context);
-                      },
-                    ),
+                    // ViolationCard(
+                    //   onTap: () {
+                    //     vm.onHistoryProfileClicked(context);
+                    //   },
+                    //   violationType: "Lane Violation",
+                    //   driverName: "cvb",
+                    //   vehicleName: "Nissan Altima",
+                    // ),
                   ],
                 ),
               ],

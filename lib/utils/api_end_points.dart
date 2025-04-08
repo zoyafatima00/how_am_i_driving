@@ -4,7 +4,7 @@ class ApiEndPoints {
   ApiEndPoints._();
   static const String BASE_URL = 'http://192.168.18.130:8000/';
   static String SIGNUP_URI = 'signup';
-  static String LOGIN_URI = 'login';
+  static String DRIVER_LOGIN_URI = 'driverlogin';
 
   static String FORGOTPASSWOTRD_URI = 'forgotpassword';
   static String VERIFYOTP_URI = 'verify-otp';
@@ -30,4 +30,5 @@ class ApiEndPoints {
   static String ADD_RIDE_URI = 'add-ride';
   static const String RIDE_LIST_URI = 'ride-list';
   static const String RIDE_DETAILS_URI = 'ride-details';
+  static const String RIDE_LIST_URI_BYNAME = 'ride-list-by-name';
 }
